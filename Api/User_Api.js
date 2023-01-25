@@ -5,7 +5,9 @@ export const user_login = async data => {
       const result = await ApiManager("/login", {
           method:"POST",
           headers:{
-             'Content-Type':"application/json"
+             'Content-Type':"application/json", 
+             'Accept':"application/json",
+             'X-Requested-With':"XMLHttpRequest"
 
           },
           data:data,

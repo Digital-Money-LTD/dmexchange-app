@@ -8,10 +8,11 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    BackHandler
+    BackHandler,
+    TextInput
 } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
-import IntlPhoneInput from 'react-native-intl-phone-input';
+//import IntlPhoneInput from 'react-native-intl-phone-input';
 import { useFocusEffect } from '@react-navigation/native';
 
 const SignInScreen = ({ navigation }) => {
@@ -59,11 +60,13 @@ const SignInScreen = ({ navigation }) => {
                 >
                     {logo()}
                     {signInText()}
-                    {phoneNumberTextField()}
+                    {emailLogin()}
+                    {passwordTextField()}
                     {continueButton()}
                     {sendOTPInfo()}
                     {loginWithFacebookButton()}
                     {loginWithGoogleButton()}
+                   
                 </ScrollView>
             </View>
             {
@@ -80,16 +83,29 @@ const SignInScreen = ({ navigation }) => {
         </SafeAreaView>
     )
 
-    function phoneNumberTextField() {
+   function emailLogin() {
         return (
-            <IntlPhoneInput
-                onChangeText={({ phoneNumber }) => setPhoneNumber(phoneNumber)}
-                defaultCountry="US"
-                placeholder="Phone Number"
-                containerStyle={styles.phoneNumberContainerStyle}
-                dialCodeTextStyle={{ ...Fonts.black16Medium }}
-                phoneInputStyle={{ flex: 1, marginLeft: Sizes.fixPadding + 5.0, ...Fonts.black16Medium }}
-            />
+            <View style={styles.textFieldContainerStyle}>
+                <TextInput
+                    placeholder="Email"
+                    placeholderTextColor={Colors.blackColor}
+                    style={{ ...Fonts.black16Medium }}
+                    keyboardType="email-address"
+                />
+            </View>
+        )
+    }
+
+    function passwordTextField() {
+        return (
+            <View style={styles.textFieldContainerStyle}>
+                <TextInput
+                    placeholder="Password"
+                    placeholderTextColor={Colors.blackColor}
+                    style={{ ...Fonts.black16Medium }}
+                    secureTextEntry={true}
+                />
+            </View>
         )
     }
 
@@ -99,10 +115,20 @@ const SignInScreen = ({ navigation }) => {
                 activeOpacity={0.9}
                 onPress={() => navigation.push('Register')}
                 style={styles.continueButtonStyle}>
-                <Text style={{ ...Fonts.white16SemiBold }}>Continue</Text>
+                <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
             </TouchableOpacity>
         )
     }
+
+    function MyTextField({ onChangeText }) {
+  return (
+    <TextInput
+      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+      onChangeText={text => onChangeText(text)}
+      placeholder="Enter text here"
+    />
+  );
+}
 
     function loginWithFacebookButton() {
         return (
@@ -163,6 +189,16 @@ const SignInScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+     textFieldContainerStyle: {
+        marginHorizontal: Sizes.fixPadding * 2.0,
+        backgroundColor: Colors.whiteColor,
+        paddingVertical: Sizes.fixPadding + 3.0,
+        paddingHorizontal: Sizes.fixPadding + 5.0,
+        borderRadius: Sizes.fixPadding,
+        elevation: 1.0,
+        marginTop: Sizes.fixPadding * 2.0
+    },
+
     loginWithFacebookButtonStyle: {
         flexDirection: 'row',
         backgroundColor: '#3B5998',
