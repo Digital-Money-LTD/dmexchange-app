@@ -14,7 +14,6 @@
     "@rneui/themed": "^4.0.0-rc.6",
     "expo": "~46.0.7",
     "expo-status-bar": "~1.4.0",
-    "metro-core": "^0.73.6",
     "react": "18.0.0",
     "react-native": "0.69.6",
     "react-native-animated-spinkit": "^1.5.2",
