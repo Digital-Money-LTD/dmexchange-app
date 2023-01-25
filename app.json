@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "RN CryptoX",
-    "slug": "rn-CryptoX",
+    "name": "Digital Money",
+    "slug": "DM exchange",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -18,11 +18,11 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.render.cryptoxrn",
+      "bundleIdentifier": "com.dmexchange.DigitalMoney",
       "buildNumber": "1.0.1"
     },
     "android": {
-      "package": "com.render.cryptoxrn",
+      "package": "com.dmexchange.DigitalMoney",
       "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",

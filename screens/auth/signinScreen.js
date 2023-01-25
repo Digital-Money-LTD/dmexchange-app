@@ -120,16 +120,6 @@ const SignInScreen = ({ navigation }) => {
         )
     }
 
-    function MyTextField({ onChangeText }) {
-  return (
-    <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-      onChangeText={text => onChangeText(text)}
-      placeholder="Enter text here"
-    />
-  );
-}
-
     function loginWithFacebookButton() {
         return (
             <View>
@@ -182,7 +172,7 @@ const SignInScreen = ({ navigation }) => {
     function signInText() {
         return (
             <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginVertical: Sizes.fixPadding + 5.0 }}>
-                Signin with phone number
+                Digital Money Login
             </Text>
         )
     }
