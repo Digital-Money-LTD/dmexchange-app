@@ -60,10 +60,12 @@ const SignInScreen = ({ navigation }) => {
                     {signInText()}
                     {emailLogin()}
                     {passwordTextField()}
+                    {forGotPassword()}
                     {continueButton()}
                     {sendOTPInfo()}
                     {loginWithFacebookButton()}
                     {loginWithGoogleButton()}
+                    
                    
                 </ScrollView>
             </View>
@@ -140,12 +142,19 @@ const SignInScreen = ({ navigation }) => {
                 onChangeText={handleChange}
             />
             <TouchableOpacity onPress={() => setSeePassword(!seePassword)}>
-                <Text>{seePassword ? 'Hide' : 'Show'}</Text>
+                <View style={{position: 'absolute', bottom:'80%', left: '95%'}}>
+                    { seePassword ? 
+                        <Image source={require('../../assets/images/icon/form/hide-icon.png')}/> 
+                        : <Image source={require('../../assets/images/icon/form/show-icon.png')}/>
+                    }
+                </View>
             </TouchableOpacity>
             {checkValidPassword && <Text style={styles.errorTextStyle}>Invalid password</Text>}
         </View>
     )
 }
+    
+
 
 
     function continueButton() {
@@ -217,6 +226,20 @@ const SignInScreen = ({ navigation }) => {
     }
 }
 
+{/*Forgot password*/}
+
+const forGotPassword = () => {
+    return (
+        <View>
+            {/* Other form fields */}
+            <TouchableOpacity onPress={() => navigate('ResetPassword')}>
+                <Text style={{ position: 'absolute', right: 10, padding: 10 }}>Forgot Password?</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
+
 const styles = StyleSheet.create({
      textFieldContainerStyle: {
         marginHorizontal: Sizes.fixPadding * 2.0,
@@ -255,7 +278,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: Sizes.fixPadding * 2.0,
         borderRadius: Sizes.fixPadding,
-        marginTop: Sizes.fixPadding * 3.0
+        marginTop: Sizes.fixPadding * 4.0
     },
     phoneNumberContainerStyle: {
         backgroundColor: Colors.whiteColor,
