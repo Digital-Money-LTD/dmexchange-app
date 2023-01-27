@@ -44,8 +44,6 @@ const SignInScreen = ({ navigation }) => {
 
     const { backClickCount } = state;
 
-    const [phoneNumber, setPhoneNumber] = useState('');
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
             <StatusBar backgroundColor={Colors.primaryColor} />
@@ -83,31 +81,72 @@ const SignInScreen = ({ navigation }) => {
         </SafeAreaView>
     )
 
+   function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+
    function emailLogin() {
-        return (
-            <View style={styles.textFieldContainerStyle}>
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor={Colors.blackColor}
-                    style={{ ...Fonts.black16Medium }}
-                    keyboardType="email-address"
-                />
-            </View>
-        )
+    const [email, setEmail] = useState('');
+    const [checkValidEmail, setCheckValidEmail] = useState(false);
+    const handleChange = (text) => {
+        setEmail(text);
+        setCheckValidEmail(!validateEmail(text));
     }
 
-    function passwordTextField() {
-        return (
-            <View style={styles.textFieldContainerStyle}>
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor={Colors.blackColor}
-                    style={{ ...Fonts.black16Medium }}
-                    secureTextEntry={true}
-                />
-            </View>
-        )
+    return (
+        <View style={styles.textFieldContainerStyle}>
+            <TextInput
+                placeholder="Email"
+                placeholderTextColor={Colors.blackColor}
+                style={Fonts.black16Medium}
+                keyboardType="email-address"
+                value={email}
+                onChangeText={handleChange}
+            />
+            {checkValidEmail && <Text style={styles.errorTextStyle}>Invalid email</Text>}
+        </View>
+    )
+}
+
+    function validatePassword(password) {
+    if (password.length > 5) {
+        return false;
+    } else {
+        return true;
     }
+}
+
+
+    function passwordTextField() {
+    const [password, setPassword] = useState('');
+    const [seePassword, setSeePassword] = useState(true);
+    const [checkValidPassword, setCheckValidPassword] = useState(false);
+
+    const handleChange = (text) => {
+        setPassword(text);
+        setCheckValidPassword(validatePassword(text));
+    }
+
+    return (
+        <View style={styles.textFieldContainerStyle}>
+            <TextInput
+                placeholder="Password"
+                placeholderTextColor={Colors.blackColor}
+                style={Fonts.black16Medium}
+                secureTextEntry={!seePassword}
+                value={password}
+                onChangeText={handleChange}
+            />
+            <TouchableOpacity onPress={() => setSeePassword(!seePassword)}>
+                <Text>{seePassword ? 'Hide' : 'Show'}</Text>
+            </TouchableOpacity>
+            {checkValidPassword && <Text style={styles.errorTextStyle}>Invalid password</Text>}
+        </View>
+    )
+}
+
 
     function continueButton() {
         return (

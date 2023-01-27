@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, Touc
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
 
+
 const RegisterScreen = ({ navigation }) => {
 
     return (
