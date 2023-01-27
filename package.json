@@ -13,6 +13,8 @@
     "@react-navigation/stack": "^6.2.2",
     "@rneui/themed": "^4.0.0-rc.6",
     "axios": "^1.2.4",
+    "chalk": "^5.2.0",
+    "debug": "^4.3.4",
     "expo": "~46.0.7",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
