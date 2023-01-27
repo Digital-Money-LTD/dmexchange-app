@@ -11,6 +11,7 @@ import {
     BackHandler,
     TextInput
 } from "react-native";
+
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 //import IntlPhoneInput from 'react-native-intl-phone-input';
 import { useFocusEffect } from '@react-navigation/native';
@@ -41,6 +42,15 @@ const SignInScreen = ({ navigation }) => {
     });
 
     const updateState = (data) => setState((state) => ({ ...state, ...data }));
+
+    const handleLogin = () => {
+        const checkPassword = checkPasswordValidity(passwoard)
+        if(!checkPassword){
+            alert("Success Login")
+        }else {
+            alert(checkPassword)
+        }
+    }
 
     const { backClickCount } = state;
 
@@ -148,16 +158,17 @@ const SignInScreen = ({ navigation }) => {
 }
 
 
-    function continueButton() {
+function continueButton() {
         return (
             <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => navigation.push('Register')}
+                onPress={handleLogin}
                 style={styles.continueButtonStyle}>
                 <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
             </TouchableOpacity>
         )
     }
+
 
     function loginWithFacebookButton() {
         return (
