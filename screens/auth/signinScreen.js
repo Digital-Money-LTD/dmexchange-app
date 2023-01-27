@@ -164,7 +164,7 @@ const SignInScreen = ({ navigation }) => {
             <View>
                 <View style={styles.loginWithFacebookButtonStyle}>
                     <Image source={require('../../assets/images/facebook.png')}
-                        style={{ height: 30.0, width: 30.0 }}
+                        style={{ height: 20.0, width: 30.0 }}
                         resizeMode="contain"
                     />
                     <Text style={{ ...Fonts.white15Medium, marginLeft: Sizes.fixPadding + 5.0 }}>
@@ -180,7 +180,7 @@ const SignInScreen = ({ navigation }) => {
             <View>
                 <View style={styles.loginWithGoogleButtonStyle}>
                     <Image source={require('../../assets/images/google.png')}
-                        style={{ height: 30.0, width: 30.0 }}
+                        style={{ height: 20.0, width: 30.0 }}
                         resizeMode="contain"
                     />
                     <Text style={{ ...Fonts.black15Medium, marginLeft: Sizes.fixPadding + 5.0 }}>
@@ -194,7 +194,7 @@ const SignInScreen = ({ navigation }) => {
     function sendOTPInfo() {
         return (
             <Text style={{ ...Fonts.black15Medium, alignSelf: 'center', marginTop: Sizes.fixPadding }}>
-                We'll send otp for verification
+               {/* We'll send otp for verification*/} 
             </Text>
         )
     }
@@ -211,7 +211,7 @@ const SignInScreen = ({ navigation }) => {
     function signInText() {
         return (
             <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginVertical: Sizes.fixPadding + 5.0 }}>
-                Digital Money Login
+                {/*Digital Money Login*/}
             </Text>
         )
     }
