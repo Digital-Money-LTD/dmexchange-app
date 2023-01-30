@@ -160,6 +160,7 @@ export const Fonts = {
         color: 'white',
         fontSize: 16.0,
         fontFamily: 'Montserrat_SemiBold',
+        
     },
 
     white17SemiBold: {
