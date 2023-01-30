@@ -11,6 +11,7 @@ import {
     BackHandler,
     TextInput
 } from "react-native";
+
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 //import IntlPhoneInput from 'react-native-intl-phone-input';
 import { useFocusEffect } from '@react-navigation/native';
@@ -42,6 +43,15 @@ const SignInScreen = ({ navigation }) => {
 
     const updateState = (data) => setState((state) => ({ ...state, ...data }));
 
+    const handleLogin = () => {
+        const checkPassword = checkPasswordValidity(passwoard)
+        if(!checkPassword){
+            alert("Success Login")
+        }else {
+            alert(checkPassword)
+        }
+    }
+
     const { backClickCount } = state;
 
     return (
@@ -60,10 +70,12 @@ const SignInScreen = ({ navigation }) => {
                     {signInText()}
                     {emailLogin()}
                     {passwordTextField()}
+                    {forGotPassword()}
                     {continueButton()}
                     {sendOTPInfo()}
                     {loginWithFacebookButton()}
                     {loginWithGoogleButton()}
+                    
                    
                 </ScrollView>
             </View>
@@ -140,31 +152,39 @@ const SignInScreen = ({ navigation }) => {
                 onChangeText={handleChange}
             />
             <TouchableOpacity onPress={() => setSeePassword(!seePassword)}>
-                <Text>{seePassword ? 'Hide' : 'Show'}</Text>
+                <View style={{position: 'absolute', bottom:'80%', left: '95%'}}>
+                    { seePassword ? 
+                        <Image source={require('../../assets/images/icon/form/hide-icon.png')}/> 
+                        : <Image source={require('../../assets/images/icon/form/show-icon.png')}/>
+                    }
+                </View>
             </TouchableOpacity>
             {checkValidPassword && <Text style={styles.errorTextStyle}>Invalid password</Text>}
         </View>
     )
 }
+    
 
 
-    function continueButton() {
+
+function continueButton() {
         return (
             <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => navigation.push('Register')}
+                onPress={handleLogin}
                 style={styles.continueButtonStyle}>
                 <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
             </TouchableOpacity>
         )
     }
 
+
     function loginWithFacebookButton() {
         return (
             <View>
                 <View style={styles.loginWithFacebookButtonStyle}>
                     <Image source={require('../../assets/images/facebook.png')}
-                        style={{ height: 30.0, width: 30.0 }}
+                        style={{ height: 20.0, width: 30.0 }}
                         resizeMode="contain"
                     />
                     <Text style={{ ...Fonts.white15Medium, marginLeft: Sizes.fixPadding + 5.0 }}>
@@ -180,7 +200,7 @@ const SignInScreen = ({ navigation }) => {
             <View>
                 <View style={styles.loginWithGoogleButtonStyle}>
                     <Image source={require('../../assets/images/google.png')}
-                        style={{ height: 30.0, width: 30.0 }}
+                        style={{ height: 20.0, width: 30.0 }}
                         resizeMode="contain"
                     />
                     <Text style={{ ...Fonts.black15Medium, marginLeft: Sizes.fixPadding + 5.0 }}>
@@ -194,7 +214,7 @@ const SignInScreen = ({ navigation }) => {
     function sendOTPInfo() {
         return (
             <Text style={{ ...Fonts.black15Medium, alignSelf: 'center', marginTop: Sizes.fixPadding }}>
-                We'll send otp for verification
+               {/* We'll send otp for verification*/} 
             </Text>
         )
     }
@@ -211,11 +231,25 @@ const SignInScreen = ({ navigation }) => {
     function signInText() {
         return (
             <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginVertical: Sizes.fixPadding + 5.0 }}>
-                Digital Money Login
+                {/*Digital Money Login*/}
             </Text>
         )
     }
 }
+
+{/*Forgot password*/}
+
+const forGotPassword = () => {
+    return (
+        <View>
+            {/* Other form fields */}
+            <TouchableOpacity onPress={() => navigate('ResetPassword')}>
+                <Text style={{ position: 'absolute', right: 10, padding: 10 }}>Forgot Password?</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
 
 const styles = StyleSheet.create({
      textFieldContainerStyle: {
@@ -255,7 +289,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: Sizes.fixPadding * 2.0,
         borderRadius: Sizes.fixPadding,
-        marginTop: Sizes.fixPadding * 3.0
+        marginTop: Sizes.fixPadding * 4.0
     },
     phoneNumberContainerStyle: {
         backgroundColor: Colors.whiteColor,
