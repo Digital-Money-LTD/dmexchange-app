@@ -1,10 +1,52 @@
-import React from "react";
-import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import axios from "axios";
+import React, { useState, useCallback } from "react";
+import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
 
 
 const RegisterScreen = ({ navigation }) => {
+
+    //
+    const [loader, setLoader] = useState({ isLoading: false });
+
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+    //{loader && ( <ActivityIndicator  color="#ffffff" /> )}
+
+    const handleSubmit = () => {
+        //setLoader({ isLoading: true });
+        
+        if (!username || !email || !password || !passwordConfirm) {
+            Alert.alert('All fields are required');
+            //setTimeout(() => { setLoader({ isLoading: false }); }, 1000);
+            return;
+        }
+
+        if (password !== passwordConfirm) {
+            Alert.alert('Passwords do not match');
+            return;
+        }
+
+        axios.post('https://staging.dmexchange.com/api/register', {
+            name: username,
+            email: email,
+            password: password
+        })
+        
+
+        .then(response => {
+          console.log(response);
+          Alert.alert('Registration successful!');
+          
+        })
+        .catch(error => {
+          console.log(error);
+          Alert.alert('Error registering user. Please try again.');
+        });
+      }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
@@ -25,96 +67,63 @@ const RegisterScreen = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                 >
-                    {logo()}
-                    {registerText()}
-                    {userNameTextField()}
-                    {emailTextField()}
-                    {passwordTextField()}
-                    {confirmPasswordTextField()}
-                    {continueButton()}
+                    <Image source={require('../../assets/images/auth-icon.png')}
+                        style={{ alignSelf: 'center', width: 150.0, height: 150.0, marginBottom: Sizes.fixPadding }}
+                        resizeMode="contain"
+                    />
+                    <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginTop: Sizes.fixPadding + 5.0 }}>
+                        Register your account
+                    </Text>
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={username}
+                            placeholder="Username"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            onChangeText={text => setUsername(text)}
+                        />
+                    </View>
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={email}
+                            placeholder="Email"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            keyboardType="email-address"
+                            onChangeText={text => setEmail(text)}
+                        />
+                    </View>
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={password}
+                            placeholder="Password"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            secureTextEntry={true}
+                            onChangeText={text => setPassword(text)}
+                        />
+                    </View>
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={passwordConfirm}
+                            placeholder="Confirm Password"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            secureTextEntry={true}
+                            onChangeText={text => setPasswordConfirm(text)}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={handleSubmit}
+                        style={styles.continueButtonStyle}>
+                        <Text style={{ ...Fonts.white16SemiBold }}>Register</Text>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
         </SafeAreaView>
     )
 
-    function continueButton() {
-        return (
-            <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.push('OTP')}
-                style={styles.continueButtonStyle}>
-                <Text style={{ ...Fonts.white16SemiBold }}>Continue</Text>
-            </TouchableOpacity>
-        )
-    }
-
-    function confirmPasswordTextField() {
-        return (
-            <View style={styles.textFieldContainerStyle}>
-                <TextInput
-                    placeholder="Confirm Password"
-                    placeholderTextColor={Colors.blackColor}
-                    style={{ ...Fonts.black16Medium }}
-                    secureTextEntry={true}
-                />
-            </View>
-        )
-    }
-
-    function passwordTextField() {
-        return (
-            <View style={styles.textFieldContainerStyle}>
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor={Colors.blackColor}
-                    style={{ ...Fonts.black16Medium }}
-                    secureTextEntry={true}
-                />
-            </View>
-        )
-    }
-
-    function emailTextField() {
-        return (
-            <View style={styles.textFieldContainerStyle}>
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor={Colors.blackColor}
-                    style={{ ...Fonts.black16Medium }}
-                    keyboardType="email-address"
-                />
-            </View>
-        )
-    }
-
-    function userNameTextField() {
-        return (
-            <View style={styles.textFieldContainerStyle}>
-                <TextInput
-                    placeholder="Username"
-                    placeholderTextColor={Colors.blackColor}
-                    style={{ ...Fonts.black16Medium }}
-                />
-            </View>
-        )
-    }
-
-    function registerText() {
-        return (
-            <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginTop: Sizes.fixPadding + 5.0 }}>
-                Register your account
-            </Text>
-        )
-    }
-
-    function logo() {
-        return (
-            <Image source={require('../../assets/images/auth-icon.png')}
-                style={{ alignSelf: 'center', width: 150.0, height: 150.0, marginBottom: Sizes.fixPadding }}
-                resizeMode="contain"
-            />
-        )
-    }
 }
 
 const styles = StyleSheet.create({
