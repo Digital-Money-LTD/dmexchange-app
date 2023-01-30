@@ -3,6 +3,8 @@ import React, { useState, useCallback } from "react";
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
+import {postRequest} from "../../Api/request";
+//import request from "./request";
 
 
 const RegisterScreen = ({ navigation }) => {
@@ -30,21 +32,20 @@ const RegisterScreen = ({ navigation }) => {
             return;
         }
 
-        axios.post('https://staging.dmexchange.com/api/register', {
+        const registerdata = {
             name: username,
             email: email,
             password: password
-        })
-        
+        };
 
+        postRequest('register', registerdata)
         .then(response => {
-          console.log(response);
-          Alert.alert('Registration successful!');
-          
+            console.log(response);
+            Alert.alert('Registration successful!');
         })
         .catch(error => {
-          console.log(error);
-          Alert.alert('Error registering user. Please try again.');
+            console.log(error);
+            Alert.alert('Error registering user. Please try again.');
         });
       }
 
