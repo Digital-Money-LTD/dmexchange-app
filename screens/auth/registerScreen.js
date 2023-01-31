@@ -12,13 +12,13 @@ const RegisterScreen = ({ navigation }) => {
     //
     const [loader, setLoader] = useState({ isLoading: false });
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [usesrname, setUsernasme] = useState('');
+    const [emasil, setEmasil] = useState('');
+    const [passsword, setPsassword] = useState('');
+    const [passswordConfirm, setPassswordConfirm] = useState('');
     //{loader && ( <ActivityIndicator  color="#ffffff" /> )}
 
-    const handleSubmit = () => {
+    const handleSubmits = () => {
         //setLoader({ isLoading: true });
         
         if (!username || !email || !password || !passwordConfirm) {
@@ -35,19 +35,76 @@ const RegisterScreen = ({ navigation }) => {
         const registerdata = {
             name: username,
             email: email,
+            referal_code: '',
             password: password
         };
 
-        postRequest('register', registerdata)
+        postRequest('register_user', registerdata)
         .then(response => {
             console.log(response);
             Alert.alert('Registration successful!');
+
+            //if (response.status === 201) {
+              //  console.error("Error: Request failed with status code 422");
+              //  console.error(error.response.data);
+                // Add your own error handling code here, such as displaying a message to the user
+             // } else {
+             //   console.error("Error:", error.response.data);
+             // }
         })
         .catch(error => {
             console.log(error);
             Alert.alert('Error registering user. Please try again.');
         });
       }
+
+
+      //const [loading, setLoading] = useState(false);
+        const [username, setUsername] = useState('');
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
+        const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const handleSubmit = useCallback(async () => {
+    //setLoading(true);
+
+    if (!username || !email || !password || !passwordConfirm) {
+      Alert.alert('All fields are required');
+      //setLoading(false);
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      Alert.alert('Passwords do not match');
+      //setLoading(false);
+      return;
+    }
+
+    const registerdata = {
+      name: username,
+      email: email,
+      referal_code: '',
+      password: password
+    };
+
+    try {
+      const response = await postRequest('register_user', registerdata);
+      console.log(response);
+      Alert.alert('Registration successful!');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error registering user. Please try again.');
+    } finally {
+      //setLoading(false);
+    }
+  }, [username, email, password, passwordConfirm]);
+
+
+
+
+
+
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
