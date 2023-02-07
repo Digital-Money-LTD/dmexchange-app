@@ -7,60 +7,77 @@ import { Feather } from '@expo/vector-icons';
 
 const RegisterScreen = ({ navigation }) => {
 
-    //
     const [loader, setLoader] = useState({ isLoading: false });
 
-    const [name, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [password_confirmation, setPasswordConfirm] = useState('');
-    const [refer_code, setReferalCode] = useState('');
-    //{loader && ( <ActivityIndicator  color="#ffffff" /> )}
+  const [name, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password_confirmation, setPasswordConfirm] = useState("");
+  const [refer_code, setReferalCode] = useState("");
 
-    const handleSubmit = () => {
-        //setLoader({ isLoading: true });
-        
-        if (!name || !email || !password || !password_confirmation) {
-            Alert.alert('All fields are required');
-            //setTimeout(() => { setLoader({ isLoading: false }); }, 1000);
-            return;
-        }
+  const handleSubmit = useCallback(() => {
+    setLoader({ isLoading: true });
 
-        if (password !== password_confirmation) {
-            Alert.alert('Passwords do not match');
-            return;
-        }
+    if (!name || !email || !password || !password_confirmation) {
+      Alert.alert("All fields are required");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
 
-        axios.post('https://staging.dmexchange.com/api/register', {
-            name: name,
-            email: email,
-            password: password,
-            password_confirmation: password_confirmation,
-            referal_code: refer_code
-            
-        })
-        
-        .then(response => {
-          console.log(response.data);
-          Alert.alert('Registration successful!');
-          
-        })
-        .catch(error => {
-  console.log(error.response.data); // log the error response data
-  Alert.alert('Error registering user. Please try again.');
+    if (!email.includes("@") || !email.includes(".")) {
+      Alert.alert("Invalid email address");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+    if (password !== password_confirmation) {
+      Alert.alert("Passwords do not match");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+    axios
+      .post("https://staging.dmexchange.com/api/register", {
+        name: name,
+        email: email,
+        password: password,
+        password_confirmation: password_confirmation,
+        referal_code: refer_code
+      })
+      .then(response => {
+        console.log(response.data);
+        Alert.alert("Registration successful!");
+      })
+      .catch(error => {
+        console.log(error.response.data);
+        Alert.alert("Error registering user. Please try again.");
+        setTimeout(() => {
+          setLoader({ isLoading: false });
+        }, 1000);
       });
-      }
+  }, [name, email, password, password_confirmation, refer_code]);
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
-            <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Feather
-                    name="arrow-left"
-                    size={25}
-                    color="black"
-                    style={{ position: 'absolute', left: 15.0, top: 20.0, zIndex: 1 }}
-                    onPress={() => navigation.pop()}
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
+      <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <Feather
+          name="arrow-left"
+          size={25}
+          color="black"
+          style={{
+            position: "absolute",
+            left: 15.0,
+            top: 20.0,
+            zIndex: 1
+          }}
+          onPress={() => navigation.pop()}
                 />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
