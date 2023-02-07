@@ -10,42 +10,44 @@ const RegisterScreen = ({ navigation }) => {
     //
     const [loader, setLoader] = useState({ isLoading: false });
 
-    const [username, setUsername] = useState('');
+    const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [password_confirmation, setPasswordConfirm] = useState('');
+    const [refer_code, setReferalCode] = useState('');
     //{loader && ( <ActivityIndicator  color="#ffffff" /> )}
 
     const handleSubmit = () => {
         //setLoader({ isLoading: true });
         
-        if (!username || !email || !password || !passwordConfirm) {
+        if (!name || !email || !password || !password_confirmation) {
             Alert.alert('All fields are required');
             //setTimeout(() => { setLoader({ isLoading: false }); }, 1000);
             return;
         }
 
-        if (password !== passwordConfirm) {
+        if (password !== password_confirmation) {
             Alert.alert('Passwords do not match');
             return;
         }
 
         axios.post('https://staging.dmexchange.com/api/register', {
-            name: username,
+            name: name,
             email: email,
-            password: password
+            password: password,
+            password_confirmation: password_confirmation,
+            referal_code: refer_code
         })
         
-
         .then(response => {
-          console.log(response);
+          console.log(response.data);
           Alert.alert('Registration successful!');
           
         })
         .catch(error => {
-          console.log(error);
-          Alert.alert('Error registering user. Please try again.');
-        });
+  console.log(error.response.data); // log the error response data
+  Alert.alert('Error registering user. Please try again.');
+      });
       }
 
     return (
@@ -76,7 +78,7 @@ const RegisterScreen = ({ navigation }) => {
                     </Text>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
-                            value={username}
+                            value={name}
                             placeholder="Username"
                             placeholderTextColor={Colors.blackColor}
                             style={{ ...Fonts.black16Medium }}
@@ -105,12 +107,21 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
-                            value={passwordConfirm}
+                            value={password_confirmation}
                             placeholder="Confirm Password"
                             placeholderTextColor={Colors.blackColor}
                             style={{ ...Fonts.black16Medium }}
                             secureTextEntry={true}
                             onChangeText={text => setPasswordConfirm(text)}
+                        />
+                    </View>
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={refer_code}
+                            placeholder="Optional referal"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            onChangeText={text => setReferalCode(text)}
                         />
                     </View>
                     <TouchableOpacity

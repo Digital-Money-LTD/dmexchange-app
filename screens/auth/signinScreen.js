@@ -171,7 +171,7 @@ function continueButton() {
         return (
             <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={handleLogin}
+                onPress={() => navigation.push('Register')}
                 style={styles.continueButtonStyle}>
                 <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
             </TouchableOpacity>
