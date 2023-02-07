@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { TransitionPresets, createStackNavigator } from '@react-navigation/stack';
 import { LogBox } from 'react-native';
 import BottomTabBarScreen from "./component/bottomTabBarScreen";
-import LoadingScreen from "./component/loadingScreen";
 import TotalBalanceScreen from "./screens/balance/totalBalanceScreen";
 import CurrencyScreen from "./screens/currency/currencyScreen";
 import DepositScreen from "./screens/deposit/depositScreen";
@@ -33,7 +32,7 @@ const App = () => {
           ...TransitionPresets.SlideFromRightIOS,
         }}
       >
-        <Stack.Screen name="Loading" component={LoadingScreen} />
+       
         <Stack.Screen name="Splash" component={SplashScreen} options={{ ...TransitionPresets.DefaultTransition }} />
         <Stack.Screen name="SignIn" component={SigninScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />

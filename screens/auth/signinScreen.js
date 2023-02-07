@@ -73,8 +73,8 @@ const SignInScreen = ({ navigation }) => {
                     {forGotPassword()}
                     {continueButton()}
                     {sendOTPInfo()}
-                    {loginWithFacebookButton()}
                     {loginWithGoogleButton()}
+                    {registerButton()}
                     
                    
                 </ScrollView>
@@ -177,9 +177,9 @@ function continueButton() {
             </TouchableOpacity>
         )
     }
+//function that puts the login with facebook button back on or off
 
-
-    function loginWithFacebookButton() {
+   {/*} function loginWithFacebookButton() {
         return (
             <View>
                 <View style={styles.loginWithFacebookButtonStyle}>
@@ -193,7 +193,7 @@ function continueButton() {
                 </View>
             </View>
         )
-    }
+    }*/}
 
     function loginWithGoogleButton() {
         return (
@@ -210,7 +210,16 @@ function continueButton() {
             </View>
         )
     }
-
+    function registerButton() {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={''}
+                style={styles.registerButtonStyle}>
+                <Text style={{ ...Fonts.white16SemiBold }}>Don't have an account Get Started</Text>
+            </TouchableOpacity>
+        )
+    }
     function sendOTPInfo() {
         return (
             <Text style={{ ...Fonts.black15Medium, alignSelf: 'center', marginTop: Sizes.fixPadding }}>
@@ -275,16 +284,26 @@ const styles = StyleSheet.create({
     loginWithGoogleButtonStyle: {
         flexDirection: 'row',
         backgroundColor: Colors.whiteColor,
-        paddingVertical: Sizes.fixPadding + 3.0,
+        paddingVertical: Sizes.fixPadding + 1.0,
         marginHorizontal: Sizes.fixPadding * 2.0,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: Sizes.fixPadding,
-        marginTop: Sizes.fixPadding * 2.5
+        marginTop: Sizes.fixPadding * -0.9
+    },
+    registerButtonStyle: {
+        flexDirection: 'row',
+        backgroundColor: 'black',
+        paddingVertical: Sizes.fixPadding + 1.0,
+        marginHorizontal: Sizes.fixPadding * 2.0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: Sizes.fixPadding,
+        marginTop: Sizes.fixPadding * -0.9
     },
     continueButtonStyle: {
         backgroundColor: Colors.primaryColor,
-        paddingVertical: Sizes.fixPadding + 7.0,
+        paddingVertical: Sizes.fixPadding + 1.0,
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: Sizes.fixPadding * 2.0,
