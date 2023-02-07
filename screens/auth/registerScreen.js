@@ -37,6 +37,7 @@ const RegisterScreen = ({ navigation }) => {
             password: password,
             password_confirmation: password_confirmation,
             referal_code: refer_code
+            
         })
         
         .then(response => {
