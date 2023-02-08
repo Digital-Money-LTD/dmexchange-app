@@ -2,18 +2,19 @@ import React from "react";
 import { Text, View, SafeAreaView, StatusBar, Image } from "react-native";
 
 
+
 const SplashScreen = ({ navigation }) => {
 
     setTimeout(() => {
         navigation.navigate('SignIn');
-    }, 3000);
+    }, 2000);
 
     return (
-        <SafeAreaView style={{ flex: 1,}}>
-        <StatusBar translucent={false}  />
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor:'#0a58ff'}}>
+        <StatusBar translucent={true}  />
+        <View style={{ flex: 1, backgroundColor:'#0a58ff'  }}>
           <Image
-            source={require('../assets/splash.gif')}
+            source={require('../assets/splash.png')}
             style={{ width: '100%', height: '100%'}}
           />
         </View>
