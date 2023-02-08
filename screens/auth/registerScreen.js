@@ -150,10 +150,19 @@ const RegisterScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </ScrollView>
             </View>
+            <View>
+     
+      <TouchableOpacity onPress={() => navigation.push('signin')}>
+              <Text style={{ alignSelf: 'center', marginTop: 20 }}>
+              Already have an account? <Text style={{ color: Colors.primaryColor}}>Login</Text>
+              </Text>
+          </TouchableOpacity>
+  </View>
         </SafeAreaView>
     )
 
 }
+
 
 const styles = StyleSheet.create({
     textFieldContainerStyle: {

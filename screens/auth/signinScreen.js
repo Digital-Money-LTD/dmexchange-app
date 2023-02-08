@@ -210,16 +210,7 @@ function continueButton() {
             </View>
         )
     }
-    function registerButton() {
-        return (
-            <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={''}
-                style={styles.registerButtonStyle}>
-                <Text style={{ ...Fonts.white16SemiBold }}>Don't have an account Get Started</Text>
-            </TouchableOpacity>
-        )
-    }
+    
     function sendOTPInfo() {
         return (
             <Text style={{ ...Fonts.black15Medium, alignSelf: 'center', marginTop: Sizes.fixPadding }}>
@@ -257,6 +248,18 @@ const forGotPassword = () => {
             </TouchableOpacity>
         </View>
     );
+}
+const registerButton = () => {
+    return (
+        <View>
+       
+        <TouchableOpacity onPress={() => navigation.push('registerScreen')}>
+                <Text style={{ alignSelf: 'center', marginTop: 20 }}>
+                Don't have an account? <Text style={{ color: Colors.primaryColor}}>Get Started</Text>
+                </Text>
+            </TouchableOpacity>
+    </View>
+    )
 }
 
 
