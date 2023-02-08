@@ -223,7 +223,7 @@ function continueButton() {
     function sendOTPInfo() {
         return (
             <Text style={{ ...Fonts.black15Medium, alignSelf: 'center', marginTop: Sizes.fixPadding }}>
-               {/* We'll send otp for verification*/} 
+              
             </Text>
         )
     }
