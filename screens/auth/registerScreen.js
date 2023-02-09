@@ -4,17 +4,14 @@ import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, Touc
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
 
-
-const RegisterScreen = ({ navigation }) => {
-
-    const [loader, setLoader] = useState({ isLoading: false });
-
+  const RegisterScreen = ({ navigation }) => {
+  const [loader, setLoader] = useState({ isLoading: false });
   const [name, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirm] = useState("");
   const [refer_code, setReferalCode] = useState("");
-
+  
   const handleSubmit = useCallback(() => {
     setLoader({ isLoading: true });
 
@@ -26,16 +23,43 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
 
-    if (!email.includes("@") || !email.includes(".")) {
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       Alert.alert("Invalid email address");
       setTimeout(() => {
         setLoader({ isLoading: false });
       }, 1000);
       return;
     }
-
+    // Validate password
     if (password !== password_confirmation) {
       Alert.alert("Passwords do not match");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+    // Validate username
+    if (name.length < 3) {
+      Alert.alert("Username must be at least 5 characters long");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
+    Alert.alert("Password must contain at least 6 characters including one letter, one number, and one special character (@, $, !, %, *, #, ?, &)");
+    setTimeout(() => {
+    setLoader({ isLoading: false });
+    }, 1000);
+     return;
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      Alert.alert("Password must be at least 6 characters long");
       setTimeout(() => {
         setLoader({ isLoading: false });
       }, 1000);
@@ -105,8 +129,6 @@ const RegisterScreen = ({ navigation }) => {
                         />
                     </View>
 
-                    
-
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={email}
@@ -118,6 +140,8 @@ const RegisterScreen = ({ navigation }) => {
                         />
                          
                     </View>
+                    {/*Password validation*/}
+ 
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={password}
