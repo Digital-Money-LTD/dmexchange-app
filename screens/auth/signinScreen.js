@@ -12,16 +12,26 @@ import {
     TextInput
 } from "react-native";
 
+// Import the constants for styles such as fonts, colors, and sizes
 import { Fonts, Colors, Sizes } from "../../constants/styles";
+
+// Import the phone input component for international phone number inputs, but it's commented out for now
 //import IntlPhoneInput from 'react-native-intl-phone-input';
+
+// Import the useFocusEffect hook from react-navigation
 import { useFocusEffect } from '@react-navigation/native';
 
+// Define the SignInScreen component
 const SignInScreen = ({ navigation }) => {
 
+    // Define the backAction function which is triggered when the back button is pressed
     const backAction = () => {
+        // If the back button is clicked once, exit the app, otherwise call the _spring function
         backClickCount == 1 ? BackHandler.exitApp() : _spring();
+        // Return true to indicate that the back button event was handled
         return true;
     }
+
 
     useFocusEffect(
         useCallback(() => {
@@ -41,16 +51,23 @@ const SignInScreen = ({ navigation }) => {
         backClickCount: 0
     });
 
-    const updateState = (data) => setState((state) => ({ ...state, ...data }));
+   // Function to update the state with passed data
+const updateState = (data) => {
+    setState((state) => ({ ...state, ...data }));
+};
 
-    const handleLogin = () => {
-        const checkPassword = checkPasswordValidity(passwoard)
-        if(!checkPassword){
-            alert("Success Login")
-        }else {
-            alert(checkPassword)
-        }
+// Function to handle login process
+const handleLogin = () => {
+    // Check if password is valid
+    const checkPassword = checkPasswordValidity(passwoard);
+    if (!checkPassword) {
+        // Show success message if password is valid
+        alert("Success Login");
+    } else {
+        // Show error message if password is invalid
+        alert(checkPassword);
     }
+};
 
     const { backClickCount } = state;
 
