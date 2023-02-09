@@ -91,9 +91,10 @@ const RegisterScreen = ({ navigation }) => {
                         style={{ alignSelf: 'center', width: 150.0, height: 150.0, marginBottom: Sizes.fixPadding }}
                         resizeMode="contain"
                     />
-                    <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginTop: Sizes.fixPadding + 5.0 }}>
+                   {/*} <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginTop: Sizes.fixPadding + 5.0 }}>
                         Register your account
                     </Text>
+                  */}
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={name}
@@ -156,10 +157,19 @@ const RegisterScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </ScrollView>
             </View>
+            <View>
+     
+              <TouchableOpacity onPress={() => navigation.push('signin')}>
+                      <Text style={{ position:'absolute', bottom:80, alignSelf: 'center', marginBottom: 0 }}>
+                      Already have an account? <Text style={{ color: Colors.primaryColor}}>Login</Text>
+                      </Text>
+                  </TouchableOpacity>
+          </View>
         </SafeAreaView>
     )
 
 }
+
 
 const styles = StyleSheet.create({
     textFieldContainerStyle: {
@@ -172,13 +182,13 @@ const styles = StyleSheet.create({
         marginTop: Sizes.fixPadding * 2.0
     },
     continueButtonStyle: {
-        backgroundColor: Colors.primaryColor,
-        paddingVertical: Sizes.fixPadding + 7.0,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: Sizes.fixPadding * 2.0,
-        borderRadius: Sizes.fixPadding,
-        marginTop: Sizes.fixPadding * 2.0
+      backgroundColor: Colors.primaryColor,
+      paddingVertical: Sizes.fixPadding + 1.0,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: Sizes.fixPadding * 2.0,
+      borderRadius: Sizes.fixPadding,
+      marginTop: Sizes.fixPadding * 4.0
     },
 })
 
