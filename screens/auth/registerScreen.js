@@ -103,6 +103,9 @@ const RegisterScreen = ({ navigation }) => {
                             onChangeText={text => setUsername(text)}
                         />
                     </View>
+
+                    
+
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={email}
@@ -112,6 +115,7 @@ const RegisterScreen = ({ navigation }) => {
                             keyboardType="email-address"
                             onChangeText={text => setEmail(text)}
                         />
+                         
                     </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
@@ -123,6 +127,8 @@ const RegisterScreen = ({ navigation }) => {
                             onChangeText={text => setPassword(text)}
                         />
                     </View>
+
+                    
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={password_confirmation}
