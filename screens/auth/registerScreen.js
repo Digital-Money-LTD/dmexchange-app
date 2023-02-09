@@ -161,7 +161,7 @@ const RegisterScreen = ({ navigation }) => {
      
               <TouchableOpacity onPress={() => navigation.push('signin')}>
                       <Text style={{ position:'absolute', bottom:80, alignSelf: 'center', marginBottom: 0 }}>
-                      Already have an account? <Text style={{ color: Colors.primaryColor}}>Login</Text>
+                      Already have an account? <Text style={{ color: Colors.orangeColor}}>Login</Text>
                       </Text>
                   </TouchableOpacity>
           </View>
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         marginTop: Sizes.fixPadding * 2.0
     },
     continueButtonStyle: {
-      backgroundColor: Colors.primaryColor,
+      backgroundColor: Colors.orangeColor,
       paddingVertical: Sizes.fixPadding + 1.0,
       alignItems: 'center',
       justifyContent: 'center',

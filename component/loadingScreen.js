@@ -8,11 +8,11 @@ const LoadingScreen = ({ navigation }) => {
     useEffect(() => {
         async function loadFont() {
             await Font.loadAsync({
-                Montserrat_Bold: require("../assets/fonts/Montserrat-Bold.ttf"),
-                Montserrat_Light: require("../assets/fonts/Montserrat-Light.ttf"),
-                Montserrat_Medium: require("../assets/fonts/Montserrat-Medium.ttf"),
-                Montserrat_Regular: require("../assets/fonts/Montserrat-Regular.ttf"),
-                Montserrat_SemiBold: require("../assets/fonts/Montserrat-SemiBold.ttf"),
+                PublicSans_Bold: require("../assets/fonts/PublicSans-Bold.ttf"),
+                PublicSans_Black: require("../assets/fonts/PublicSans-Black.ttf"),
+                PublicSans_Medium: require("../assets/fonts/PublicSans-Medium.ttf"),
+                PublicSans_Regular: require("../assets/fonts/PublicSans-Regular.ttf"),
+                PublicSans_SemiBold: require("../assets/fonts/PublicSans-SemiBold.ttf"),
             });
             navigation.navigate('Splash');
         }

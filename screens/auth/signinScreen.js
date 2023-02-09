@@ -112,7 +112,7 @@ const SignInScreen = ({ navigation }) => {
             <TextInput
                 placeholder="Email"
                 placeholderTextColor={Colors.blackColor}
-                style={Fonts.black16Medium}
+                style={Fonts.blackRegular}
                 keyboardType="email-address"
                 value={email}
                 onChangeText={handleChange}
@@ -146,7 +146,7 @@ const SignInScreen = ({ navigation }) => {
             <TextInput
                 placeholder="Password"
                 placeholderTextColor={Colors.blackColor}
-                style={Fonts.black16Medium}
+                style={Fonts.blackRegular}
                 secureTextEntry={!seePassword}
                 value={password}
                 onChangeText={handleChange}
@@ -173,7 +173,7 @@ function continueButton() {
                 activeOpacity={0.9}
                 onPress={() => navigation.push('Register')}
                 style={styles.continueButtonStyle}>
-                <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
+                <Text style={{ ...Fonts.blackRegular}}>Login</Text>
             </TouchableOpacity>
         )
     }
@@ -203,7 +203,7 @@ function continueButton() {
                         style={{ height: 20.0, width: 30.0 }}
                         resizeMode="contain"
                     />
-                    <Text style={{ ...Fonts.black15Medium, marginLeft: Sizes.fixPadding + 5.0 }}>
+                    <Text style={{ ...Fonts.blackRegular, marginLeft: Sizes.fixPadding + 5.0 }}>
                         Login with Google
                     </Text>
                 </View>
@@ -244,7 +244,7 @@ const forGotPassword = () => {
         <View>
             {/* Other form fields */}
             <TouchableOpacity onPress={() => navigate('ResetPassword')}>
-                <Text style={{ position: 'absolute', right: 10, padding: 10 }}>Forgot Password?</Text>
+                <Text style={{ ...Fonts.blackRegular,position: 'absolute', right: 10, padding: 10, color: Colors.orangeColor}}>Forgot Password?</Text>
             </TouchableOpacity>
         </View>
     );
@@ -254,8 +254,8 @@ const registerButton = () => {
         <View>
        
         <TouchableOpacity onPress={() => navigation.push('registerScreen')}>
-                <Text style={{ alignSelf: 'center', marginTop: 20 }}>
-                Don't have an account? <Text style={{ color: Colors.primaryColor}}>Get Started</Text>
+                <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
+                Don't have an account? <Text style={{ color: Colors.orangeColor}}>Get Started</Text>
                 </Text>
             </TouchableOpacity>
     </View>
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
         marginTop: Sizes.fixPadding * -0.9
     },
     continueButtonStyle: {
-        backgroundColor: Colors.primaryColor,
+        backgroundColor: Colors.orangeColor,
         paddingVertical: Sizes.fixPadding + 1.0,
         alignItems: 'center',
         justifyContent: 'center',
