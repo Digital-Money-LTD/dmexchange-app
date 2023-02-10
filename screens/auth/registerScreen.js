@@ -1,91 +1,39 @@
-import axios from "axios";
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
-
-  const RegisterScreen = ({ navigation }) => {
-  const [loader, setLoader] = useState({ isLoading: false });
-  const [name, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password_confirmation, setPasswordConfirm] = useState("");
-  const [refer_code, setReferalCode] = useState("");
-  
-  const handleSubmit = useCallback(() => {
-    setLoader({ isLoading: true });
-
-    if (!name || !email || !password || !password_confirmation) {
-      Alert.alert("All fields are required");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      Alert.alert("Invalid email address");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-    // Validate password
-    if (password !== password_confirmation) {
-      Alert.alert("Passwords do not match");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-
-    // Validate username
-    if (name.length < 3) {
-      Alert.alert("Username must be at least 5 characters long");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
+import { postRequest } from "../../Api/request";
 
 
-    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
-    Alert.alert("Password must contain at least 6 characters including one letter, one number, and one special character (@, $, !, %, *, #, ?, &)");
-    setTimeout(() => {
-    setLoader({ isLoading: false });
-    }, 1000);
-     return;
-    }
+const RegisterScreen = ({ navigation }) => {
+    
+    const [name, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    // Validate password length
-    if (password.length < 6) {
-      Alert.alert("Password must be at least 6 characters long");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
+    let register_data = {
+      name: name,
+      email: email,
+      password: password,
+    };
 
-    axios
-      .post("https://staging.dmexchange.com/api/register", {
-        name: name,
-        email: email,
-        password: password,
-        password_confirmation: password_confirmation,
-        referal_code: refer_code
-      })
-      .then(response => {
-        console.log(response.data);
-        Alert.alert("Registration successful!");
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        Alert.alert("Error registering user. Please try again.");
-        setTimeout(() => {
-          setLoader({ isLoading: false });
-        }, 1000);
-      });
-  }, [name, email, password, password_confirmation, refer_code]);
+    const handleRegister = (e) => {
+      e.preventDefault();
+        postRequest('register', register_data)
+        .then(response => {
+          if (response.status === 400){
+            console.log(response.data);
+            Alert.alert("Input Errors");
+          } else if (response.status === 200) {
+            console.log(response.data);
+            Alert.alert("Registration successful!");
+          }else {
+            console.log(response.data);
+            Alert.alert("Nothing to show");
+          }
+        })
+        .catch(error => console.log(error));
+    };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
@@ -96,7 +44,7 @@ import { Feather } from '@expo/vector-icons';
           size={25}
           color="black"
           style={{
-            position: "absolute",
+            position: "absolute", 
             left: 15.0,
             top: 20.0,
             zIndex: 1
@@ -115,10 +63,6 @@ import { Feather } from '@expo/vector-icons';
                         style={{ alignSelf: 'center', width: 150.0, height: 150.0, marginBottom: Sizes.fixPadding }}
                         resizeMode="contain"
                     />
-                   {/*} <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginTop: Sizes.fixPadding + 5.0 }}>
-                        Register your account
-                    </Text>
-                  */}
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={name}
@@ -127,8 +71,8 @@ import { Feather } from '@expo/vector-icons';
                             style={{ ...Fonts.black16Medium }}
                             onChangeText={text => setUsername(text)}
                         />
+                        {errors.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
                     </View>
-
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={email}
@@ -138,10 +82,8 @@ import { Feather } from '@expo/vector-icons';
                             keyboardType="email-address"
                             onChangeText={text => setEmail(text)}
                         />
-                         
+                        {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
                     </View>
-                    {/*Password validation*/}
- 
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={password}
@@ -151,9 +93,8 @@ import { Feather } from '@expo/vector-icons';
                             secureTextEntry={true}
                             onChangeText={text => setPassword(text)}
                         />
+                        {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
                     </View>
-
-                    
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={password_confirmation}
@@ -163,6 +104,7 @@ import { Feather } from '@expo/vector-icons';
                             secureTextEntry={true}
                             onChangeText={text => setPasswordConfirm(text)}
                         />
+                        {errors.password_confirmation && <Text style={{ color: 'red' }}>{errors.password_confirmation}</Text>}
                     </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
@@ -175,7 +117,7 @@ import { Feather } from '@expo/vector-icons';
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.9}
-                        onPress={handleSubmit}
+                        onPress={handleRegister}
                         style={styles.continueButtonStyle}>
                         <Text style={{ ...Fonts.white16SemiBold }}>Register</Text>
                     </TouchableOpacity>
@@ -185,7 +127,7 @@ import { Feather } from '@expo/vector-icons';
      
               <TouchableOpacity onPress={() => navigation.push('signin')}>
                       <Text style={{ position:'absolute', bottom:80, alignSelf: 'center', marginBottom: 0 }}>
-                      Already have an account? <Text style={{ color: Colors.orangeColor}}>Login</Text>
+                      Already have an account? <Text style={{ color: Colors.primaryColor}}>Login</Text>
                       </Text>
                   </TouchableOpacity>
           </View>
@@ -206,7 +148,7 @@ const styles = StyleSheet.create({
         marginTop: Sizes.fixPadding * 2.0
     },
     continueButtonStyle: {
-      backgroundColor: Colors.orangeColor,
+      backgroundColor: Colors.primaryColor,
       paddingVertical: Sizes.fixPadding + 1.0,
       alignItems: 'center',
       justifyContent: 'center',

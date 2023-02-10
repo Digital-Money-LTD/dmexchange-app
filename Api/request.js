@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const baseURL = 'https://staging.dmexchange.com/api/';
 
 function request(url) {
