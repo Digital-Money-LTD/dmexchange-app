@@ -15,8 +15,12 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
 
+<<<<<<< HEAD
     
 
+=======
+ 
+>>>>>>> 6fbfdcc32c160f01eeeb8c8242853b087a084d5f
 
     let register_data = {
       name: name,
