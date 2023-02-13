@@ -12,6 +12,58 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
 
+    if (!name || !email || !password || !password_confirmation) {
+      Alert.alert("All fields are required");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      Alert.alert("Invalid email address");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+    // Validate password
+    if (password !== password_confirmation) {
+      Alert.alert("Passwords do not match");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+    // Validate username
+    if (name.length < 3) {
+      Alert.alert("Username must be at least 5 characters long");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
+    Alert.alert("Password must contain at least 6 characters including one letter, one number, and one special character (@, $, !, %, *, #, ?, &)");
+    setTimeout(() => {
+    setLoader({ isLoading: false });
+    }, 1000);
+     return;
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      Alert.alert("Password must be at least 6 characters long");
+      setTimeout(() => {
+        setLoader({ isLoading: false });
+      }, 1000);
+      return;
+    }
+
+
     let register_data = {
       name: name,
       email: email,
