@@ -1,67 +1,21 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
-import { postRequest } from "../../Api/request";
+//import { postRequest } from "../../Api/request";
+import { AuthUser } from "../../Api/AuthUser";
 
 
 const RegisterScreen = ({ navigation }) => {
-    
+    const navigate = useNavigate();
+    const {http,setToken} = AuthUser();
     const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
 
-    if (!name || !email || !password || !password_confirmation) {
-      Alert.alert("All fields are required");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-
-    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      Alert.alert("Invalid email address");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-    // Validate password
-    if (password !== password_confirmation) {
-      Alert.alert("Passwords do not match");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-
-    // Validate username
-    if (name.length < 3) {
-      Alert.alert("Username must be at least 5 characters long");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
-
-
-    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
-    Alert.alert("Password must contain at least 6 characters including one letter, one number, and one special character (@, $, !, %, *, #, ?, &)");
-    setTimeout(() => {
-    setLoader({ isLoading: false });
-    }, 1000);
-     return;
-    }
-
-    // Validate password length
-    if (password.length < 6) {
-      Alert.alert("Password must be at least 6 characters long");
-      setTimeout(() => {
-        setLoader({ isLoading: false });
-      }, 1000);
-      return;
-    }
+    
 
 
     let register_data = {
@@ -81,10 +35,20 @@ const RegisterScreen = ({ navigation }) => {
           } else if (response.status === 200) {
             console.log(response.data);
             Alert.alert("Registration successful!");
+            navigate('/login')
           }
         })
         .catch(error => console.log(error));
     };
+
+    const submitForm = () =>{
+      http.post('/register',{register_data})
+      .then((res)=>{
+          navigate('/login')
+      })
+  }
+
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
