@@ -10,11 +10,13 @@ const RegisterScreen = ({ navigation }) => {
     const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [password_confirmation, setConfirmPassword] = useState('');
 
     let register_data = {
       name: name,
       email: email,
       password: password,
+      password_confirmation: password_confirmation
     };
 
     const handleRegister = (e) => {
@@ -27,9 +29,6 @@ const RegisterScreen = ({ navigation }) => {
           } else if (response.status === 200) {
             console.log(response.data);
             Alert.alert("Registration successful!");
-          }else {
-            console.log(response.data);
-            Alert.alert("Nothing to show");
           }
         })
         .catch(error => console.log(error));
@@ -71,7 +70,7 @@ const RegisterScreen = ({ navigation }) => {
                             style={{ ...Fonts.black16Medium }}
                             onChangeText={text => setUsername(text)}
                         />
-                        {errors.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
+                        
                     </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
@@ -82,7 +81,7 @@ const RegisterScreen = ({ navigation }) => {
                             keyboardType="email-address"
                             onChangeText={text => setEmail(text)}
                         />
-                        {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+                        
                     </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
@@ -93,7 +92,7 @@ const RegisterScreen = ({ navigation }) => {
                             secureTextEntry={true}
                             onChangeText={text => setPassword(text)}
                         />
-                        {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
+                      
                     </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
@@ -102,18 +101,9 @@ const RegisterScreen = ({ navigation }) => {
                             placeholderTextColor={Colors.blackColor}
                             style={{ ...Fonts.black16Medium }}
                             secureTextEntry={true}
-                            onChangeText={text => setPasswordConfirm(text)}
+                            onChangeText={text => setConfirmPassword(text)}
                         />
-                        {errors.password_confirmation && <Text style={{ color: 'red' }}>{errors.password_confirmation}</Text>}
-                    </View>
-                    <View style={styles.textFieldContainerStyle}>
-                        <TextInput
-                            value={refer_code}
-                            placeholder="Optional referal"
-                            placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium }}
-                            onChangeText={text => setReferalCode(text)}
-                        />
+                       
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.9}
