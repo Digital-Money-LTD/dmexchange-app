@@ -1,40 +1,65 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const baseURL = 'https://staging.dmexchange.com/api/';
 
 export default function AuthUser(){ 
-    const navigate = useNavigate();
+    const navigate =  useNavigation();
 
-    const getToken = () =>{
-        const tokenString = sessionStorage.getItem('token');
-        const userToken = JSON.parse(tokenString);
-        return userToken;
+    const getToken = async () => {
+    const tokenString = await AsyncStorage.getItem('token');
+    if (tokenString) {
+        try {
+            const userToken = JSON.parse(tokenString);
+            return userToken;
+        } catch (error) {
+            console.log('Error parsing token:', error);
+            return null;
+        }
+    } else {
+        return null;
     }
+}
 
-    const getUser = () =>{
-        const userString = sessionStorage.getItem('user');
-        const user_detail = JSON.parse(userString);
-        return user_detail;
+const getUser = async () => {
+    const userString =  await AsyncStorage.getItem('user');
+    if (userString) {
+        try {
+            const user_detail = JSON.parse(userString);
+            return user_detail;
+        } catch (error) {
+            console.log('Error parsing user:', error);
+            return null;
+        }
+    } else {
+        return null;
     }
+}
+
 
 
 
     const [token,setToken] = useState(getToken());
     const [user,setUser] = useState(getUser());
 
-    const saveToken = (user,token) =>{
-        sessionStorage.setItem('token',JSON.stringify(token));
-        sessionStorage.setItem('user',JSON.stringify(user));
-
+    const saveToken = (user, token) => {
+    if (user && token) {
+        AsyncStorage.setItem('token', JSON.stringify(token));
+        AsyncStorage.setItem('user', JSON.stringify(user));
         setToken(token);
         setUser(user);
         navigate('/dashboard');
+    } else {
+        console.log('Invalid user or token');
+    }
     }
 
+
     const logout = () => {
-        sessionStorage.clear();
+        AsyncStorage.clear();
         navigate('/login');
     }
 
@@ -50,6 +75,8 @@ export default function AuthUser(){
     const getRequest = (url) => {
         const headers = {
             Accept: 'application/json',
+            "Content-type" : "application/json",
+            "Authorization" : `Bearer ${token}`
         };
         const requestUrl = baseURL + url;
     
@@ -62,10 +89,9 @@ export default function AuthUser(){
 
     const postRequest = (url, params) => {
         const headers = {
-           // Accept: 'application/json',
-            'Content-Type':"application/json", 
-            'Accept':"application/json",
-            'X-Requested-With':"XMLHttpRequest"
+            Accept: 'application/json',
+            "Content-type" : "application/json",
+            "Authorization" : `Bearer ${token}`
         };
         const requestUrl = baseURL + url;
     

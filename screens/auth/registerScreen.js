@@ -1,26 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Feather } from '@expo/vector-icons';
 //import { postRequest } from "../../Api/request";
-import { AuthUser } from "../../Api/AuthUser";
+import  AuthUser from "../../Api/AuthUser";
 
 
 const RegisterScreen = ({ navigation }) => {
-    const navigate = useNavigate();
-    const {http,setToken} = AuthUser();
+    const navigater = useNavigation();
+    const {http, postRequest, setToken} = AuthUser();
     const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
-
-<<<<<<< HEAD
-    
-
-=======
- 
->>>>>>> 6fbfdcc32c160f01eeeb8c8242853b087a084d5f
 
     let register_data = {
       name: name,
@@ -39,18 +32,20 @@ const RegisterScreen = ({ navigation }) => {
           } else if (response.status === 200) {
             console.log(response.data);
             Alert.alert("Registration successful!");
-            navigate('/login')
+            //navigate('/login')
+            setToken(response.data.name, response.data.token)
+            navigater.navigate('BottomTabScreen');
           }
         })
         .catch(error => console.log(error));
     };
 
-    const submitForm = () =>{
-      http.post('/register',{register_data})
-      .then((res)=>{
-          navigate('/login')
-      })
-  }
+    const submitForm = () => {
+      http.post('/register', {register_data})
+        .then((res) => {
+          navigater.navigate('Login');
+        })
+    };
 
 
 

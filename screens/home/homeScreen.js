@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View, SafeAreaView, StatusBar, Image, StyleSheet, FlatList } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { AntDesign } from '@expo/vector-icons';
+import  AuthUser from "../../Api/AuthUser";
 
 const popularCurrenciesList = [
     {
@@ -71,6 +72,32 @@ const portfolioList = [
 ];
 
 const HomeScreen = ({ navigation, changeIndex }) => {
+    const { getRequest, logout } = AuthUser();
+    const [userdetails, setUserdetails] = useState('');
+
+    useEffect(()=>{
+        fetchUserDetail();
+    }, []);
+
+
+    const fetchUserDetail = () =>{
+         getRequest('get-user')
+         .then((response)=>{
+            setUserdetails(response.data);
+            console.log(response.data);
+         });
+    }
+
+       function renderElement() {
+  const userdetail = { name: userdetails.name }; // replace this with your actual user details
+  if (userdetail) {
+    return <Text>{userdetail.name}</Text>;
+  } else {
+    return <Text>no data</Text>;
+  }
+}
+
+
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -120,7 +147,34 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             <FlatList
                 ListHeaderComponent={
                     <>
-                        {userWelcome()}
+                        <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, }}>
+                        <View style={styles.userWelcomeContainerStyle}>
+                            <View>
+                                <Text style={{ ...Fonts.gray17Medium, }}>Welcome</Text>
+                                <Text style={{ ...Fonts.black22Bold, marginTop: Sizes.fixPadding - 5.0, }}>
+                                    { renderElement() }
+
+                                    <TouchableOpacity onPress={() => logout }>
+                <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
+         <Text style={{ color: Colors.orangeColor}}>logout</Text>
+                </Text>
+            </TouchableOpacity>
+                                </Text>
+                            </View>
+                            <TouchableOpacity
+                                activeOpacity={0.9}
+                                onPress={() =>
+                                    changeIndex({ index: 4 })
+                                    //navigation.push('BottomTabScreen', { index: 4 })
+                                }
+                            >
+                                <Image source={require('../../assets/images/user/user_14.jpg')}
+                                    style={{ height: 60.0, width: 60.0, borderRadius: 15.0 }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
                         {balanceAndProfitInfo()}
                         {myPortfolioTitle()}
                         {portfolioInfo()}
@@ -245,31 +299,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
         )
     }
 
-    function userWelcome() {
-        return (
-            <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, }}>
-                <View style={styles.userWelcomeContainerStyle}>
-                    <View>
-                        <Text style={{ ...Fonts.gray17Medium, }}>Welcome</Text>
-                        <Text style={{ ...Fonts.black22Bold, marginTop: Sizes.fixPadding - 5.0, }}>
-                            Peter Jones
-                        </Text>
-                    </View>
-                    <TouchableOpacity
-                        activeOpacity={0.9}
-                        onPress={() =>
-                            changeIndex({ index: 4 })
-                            //navigation.push('BottomTabScreen', { index: 4 })
-                        }
-                    >
-                        <Image source={require('../../assets/images/user/user_14.jpg')}
-                            style={{ height: 60.0, width: 60.0, borderRadius: 15.0 }}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-    }
+    
 }
 
 const styles = StyleSheet.create({
