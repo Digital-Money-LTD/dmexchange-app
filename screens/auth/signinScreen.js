@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import {
     Text,
     SafeAreaView,
@@ -9,67 +11,51 @@ import {
     StyleSheet,
     ScrollView,
     BackHandler,
+    Alert,
     TextInput
 } from "react-native";
+import  AuthUser from "../../Api/AuthUser";
 
 // Import the constants for styles such as fonts, colors, and sizes
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 
-// Import the phone input component for international phone number inputs, but it's commented out for now
-//import IntlPhoneInput from 'react-native-intl-phone-input';
 
-// Import the useFocusEffect hook from react-navigation
-import { useFocusEffect } from '@react-navigation/native';
 
 // Define the SignInScreen component
 const SignInScreen = ({ navigation }) => {
+    const navigater = useNavigation();
+    const {http, postRequest, setToken} = AuthUser();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    // Define the backAction function which is triggered when the back button is pressed
-    const backAction = () => {
-        // If the back button is clicked once, exit the app, otherwise call the _spring function
-        backClickCount == 1 ? BackHandler.exitApp() : _spring();
-        // Return true to indicate that the back button event was handled
-        return true;
-    }
+    let login_data = {
+        email: email,
+        password: password
+    };
 
+    const handleLogin = (e) => {
+        e.preventDefault();
+          postRequest('login', login_data)
+          .then(response => {
+            if (response.data.status === 401 ){
+              console.log(response.data);
+              Alert.alert(response.data.message);
+            } else if (response.data.status === 400) {
+                Alert.alert("Input Errors" + response.data.message);
+            } else if (response.data.status === 200) {
+              console.log(response.data);
+              AsyncStorage.setItem('api_token', response.data.token);
+              setIsLoggedIn(true);
+              Alert.alert(response.data.message);
+              setEmail('');
+              setPassword('');
+              navigater.navigate('BottomTabScreen');
+            }
+          })
+          .catch(error => console.log(error));
+      };
 
-    useFocusEffect(
-        useCallback(() => {
-            BackHandler.addEventListener("hardwareBackPress", backAction);
-            return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
-        }, [backAction])
-    );
-
-    function _spring() {
-        updateState({ backClickCount: 1 });
-        setTimeout(() => {
-            updateState({ backClickCount: 0 })
-        }, 1000)
-    }
-
-    const [state, setState] = useState({
-        backClickCount: 0
-    });
-
-   // Function to update the state with passed data
-const updateState = (data) => {
-    setState((state) => ({ ...state, ...data }));
-};
-
-// Function to handle login process
-const handleLogin = () => {
-    // Check if password is valid
-    const checkPassword = checkPasswordValidity(passwoard);
-    if (!checkPassword) {
-        // Show success message if password is valid
-        alert("Success Login");
-    } else {
-        // Show error message if password is invalid
-        alert(checkPassword);
-    }
-};
-
-    const { backClickCount } = state;
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
@@ -85,101 +71,51 @@ const handleLogin = () => {
                 >
                     {logo()}
                     {signInText()}
-                    {emailLogin()}
-                    {passwordTextField()}
+                    
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={email}
+                            placeholder="Email"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            keyboardType="email-address"
+                            onChangeText={text => setEmail(text)}
+                        />
+                    </View>
+                    <View style={styles.textFieldContainerStyle}>
+                        <TextInput
+                            value={password}
+                            placeholder="Password"
+                            placeholderTextColor={Colors.blackColor}
+                            style={{ ...Fonts.black16Medium }}
+                            secureTextEntry={true}
+                            onChangeText={text => setPassword(text)}
+                        />
+                    </View>
                     {forGotPassword()}
-                    {continueButton()}
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={handleLogin}
+                        style={styles.continueButtonStyle}>
+                        <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
+                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity onPress={() => navigation.push('Register')}>
+                                <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
+                                Don't have an account? <Text style={{ color: Colors.orangeColor}}>Get Started</Text>
+                                </Text>
+                        </TouchableOpacity>
+                    </View>
                     {sendOTPInfo()}
                     {loginWithGoogleButton()}
-                    {registerButton()}
                     
-                   
                 </ScrollView>
             </View>
-            {
-                backClickCount == 1
-                    ?
-                    <View style={[styles.animatedView]}>
-                        <Text style={{ ...Fonts.white13Medium }}>
-                            Press Back Once Again to Exit
-                        </Text>
-                    </View>
-                    :
-                    null
-            }
+            
         </SafeAreaView>
     )
 
-   function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
-
-   function emailLogin() {
-    const [email, setEmail] = useState('');
-    const [checkValidEmail, setCheckValidEmail] = useState(false);
-    const handleChange = (text) => {
-        setEmail(text);
-        setCheckValidEmail(!validateEmail(text));
-    }
-
-    return (
-        <View style={styles.textFieldContainerStyle}>
-            <TextInput
-                placeholder="Email"
-                placeholderTextColor={Colors.blackColor}
-                style={Fonts.blackRegular}
-                keyboardType="email-address"
-                value={email}
-                onChangeText={handleChange}
-            />
-            {checkValidEmail && <Text style={styles.errorTextStyle}>Invalid email</Text>}
-        </View>
-    )
-}
-
-    function validatePassword(password) {
-    if (password.length > 5) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-
-    function passwordTextField() {
-    const [password, setPassword] = useState('');
-    const [seePassword, setSeePassword] = useState(true);
-    const [checkValidPassword, setCheckValidPassword] = useState(false);
-
-    const handleChange = (text) => {
-        setPassword(text);
-        setCheckValidPassword(validatePassword(text));
-    }
-
-    return (
-        <View style={styles.textFieldContainerStyle}>
-            <TextInput
-                placeholder="Password"
-                placeholderTextColor={Colors.blackColor}
-                style={Fonts.blackRegular}
-                secureTextEntry={!seePassword}
-                value={password}
-                onChangeText={handleChange}
-            />
-            <TouchableOpacity onPress={() => setSeePassword(!seePassword)}>
-                <View style={{position: 'absolute', bottom:'80%', left: '95%'}}>
-                    { seePassword ? 
-                        <Image source={require('../../assets/images/icon/form/hide-icon.png')}/> 
-                        : <Image source={require('../../assets/images/icon/form/show-icon.png')}/>
-                    }
-                </View>
-            </TouchableOpacity>
-            {checkValidPassword && <Text style={styles.errorTextStyle}>Invalid password</Text>}
-        </View>
-    )
-}
+   
     
 
 

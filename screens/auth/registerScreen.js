@@ -9,7 +9,7 @@ import  AuthUser from "../../Api/AuthUser";
 
 const RegisterScreen = ({ navigation }) => {
     const navigater = useNavigation();
-    const {http, postRequest, setToken} = AuthUser();
+    const { postRequest } = AuthUser();
     const [name, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,27 +26,19 @@ const RegisterScreen = ({ navigation }) => {
       e.preventDefault();
         postRequest('register', register_data)
         .then(response => {
-          if (response.status === 400){
-            console.log(response.data);
-            Alert.alert("Input Errors");
-          } else if (response.status === 200) {
-            console.log(response.data);
-            Alert.alert("Registration successful!");
-            //navigate('/login')
-            setToken(response.data.name, response.data.token)
-            navigater.navigate('BottomTabScreen');
+          if (response.data.status === 400){
+            Alert.alert("Input Errors" + response.data.message);
+          } else if (response.data.status === 200) {
+            Alert.alert(response.data.message);
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            navigater.navigate('SigninScreen');
           }
         })
         .catch(error => console.log(error));
     };
-
-    const submitForm = () => {
-      http.post('/register', {register_data})
-        .then((res) => {
-          navigater.navigate('Login');
-        })
-    };
-
 
 
   return (
@@ -130,7 +122,7 @@ const RegisterScreen = ({ navigation }) => {
             </View>
             <View>
      
-              <TouchableOpacity onPress={() => navigation.push('signin')}>
+              <TouchableOpacity onPress={() => navigation.push('SignIn')}>
                       <Text style={{ position:'absolute', bottom:80, alignSelf: 'center', marginBottom: 0 }}>
                       Already have an account? <Text style={{ color: Colors.primaryColor}}>Login</Text>
                       </Text>

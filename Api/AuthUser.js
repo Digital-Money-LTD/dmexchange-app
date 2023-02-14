@@ -76,7 +76,7 @@ const getUser = async () => {
         const headers = {
             Accept: 'application/json',
             "Content-type" : "application/json",
-            "Authorization" : `Bearer ${token}`
+            //"Authorization" : `Bearer ${token}`
         };
         const requestUrl = baseURL + url;
     
@@ -91,7 +91,7 @@ const getUser = async () => {
         const headers = {
             Accept: 'application/json',
             "Content-type" : "application/json",
-            "Authorization" : `Bearer ${token}`
+            //"Authorization" : `Bearer ${token}`
         };
         const requestUrl = baseURL + url;
     

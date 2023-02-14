@@ -73,7 +73,7 @@ const portfolioList = [
 
 const HomeScreen = ({ navigation, changeIndex }) => {
     const { getRequest, logout } = AuthUser();
-    const [userdetails, setUserdetails] = useState('');
+    const [userdetail, setUserdetails] = useState('');
 
     useEffect(()=>{
         fetchUserDetail();
@@ -87,16 +87,6 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             console.log(response.data);
          });
     }
-
-       function renderElement() {
-  const userdetail = { name: userdetails.name }; // replace this with your actual user details
-  if (userdetail) {
-    return <Text>{userdetail.name}</Text>;
-  } else {
-    return <Text>no data</Text>;
-  }
-}
-
 
 
     const renderItem = ({ item }) => (
@@ -152,13 +142,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                             <View>
                                 <Text style={{ ...Fonts.gray17Medium, }}>Welcome</Text>
                                 <Text style={{ ...Fonts.black22Bold, marginTop: Sizes.fixPadding - 5.0, }}>
-                                    { renderElement() }
-
-                                    <TouchableOpacity onPress={() => logout }>
-                <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
-         <Text style={{ color: Colors.orangeColor}}>logout</Text>
-                </Text>
-            </TouchableOpacity>
+                                {userdetail.name}
                                 </Text>
                             </View>
                             <TouchableOpacity

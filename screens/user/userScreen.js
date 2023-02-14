@@ -1,12 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState }  from "react";
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, View, SafeAreaView, StatusBar, Image, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Dialog from "react-native-dialog";
+import  AuthUser from "../../Api/AuthUser";
 
 const { width } = Dimensions.get('screen');
 
 const UserScreen = ({ navigation }) => {
+    const navigater = useNavigation();
+    const { postRequest, getRequest } = AuthUser();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userdetail, setUserdetails] = useState('');
+
+    useEffect(()=>{
+        fetchUserDetail();
+    }, []);
+
+
+    const fetchUserDetail = () =>{
+         getRequest('get-user')
+         .then((response)=>{
+            setUserdetails(response.data);
+         });
+    }
+
+    const handleLogout = () => {
+        AsyncStorage.removeItem('api_token');
+        setIsLoggedIn(false);
+        navigater.navigate('SignIn');
+      };
+
 
     const [state, setState] = useState({
         showLogoutDialog: false,
@@ -115,10 +141,7 @@ const UserScreen = ({ navigation }) => {
                             <Text style={{ ...Fonts.black16Medium }}>Cancel</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.9}
-                            onPress={() => {
-                                updateState({ showLogoutDialog: false })
-                                navigation.push('SignIn')
-                            }}
+                            onPress={handleLogout}
                             style={styles.logOutButtonStyle}
                         >
                             <Text style={{ ...Fonts.white16Medium }}>Logout</Text>
@@ -167,7 +190,7 @@ const UserScreen = ({ navigation }) => {
                 <Text style={{ ...Fonts.gray15Medium, marginTop: Sizes.fixPadding }}>
                 </Text>
                 <Text style={{ ...Fonts.black19Bold, marginVertical: Sizes.fixPadding - 5.0 }}>
-                    Prter Jones
+                {userdetail.name}
                 </Text>
                 <Text style={{ ...Fonts.gray16Medium }}>
                     +1 123456987
