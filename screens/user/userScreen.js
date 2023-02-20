@@ -193,7 +193,7 @@ const UserScreen = ({ navigation }) => {
                 {userdetail.name}
                 </Text>
                 <Text style={{ ...Fonts.gray16Medium }}>
-                    +1 123456987
+                {userdetail.email}
                 </Text>
             </View>
         )

@@ -19,15 +19,43 @@ import  AuthUser from "../../Api/AuthUser";
 // Import the constants for styles such as fonts, colors, and sizes
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 
+const errorstyles= StyleSheet.create({
+    input: {
+      height: 40,
+      borderColor: "gray",
+      borderWidth: 1,
+      padding: 10,
+      marginBottom: 10,
+    },
+    inputError: {
+      borderColor: "red",
+    },
+    error: {
+      color: 'red',
+      marginTop: 2,
+      marginLeft: 30,
+    },
+  });
+  
+
 
 
 // Define the SignInScreen component
 const SignInScreen = ({ navigation }) => {
+
     const navigater = useNavigation();
     const {http, postRequest, setToken} = AuthUser();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const [errors, setErrors] = useState([]);
+    const [isError, setIsError] = useState(false);
+
+    
+
+
+
 
     let login_data = {
         email: email,
@@ -53,7 +81,27 @@ const SignInScreen = ({ navigation }) => {
               navigater.navigate('BottomTabScreen');
             }
           })
-          .catch(error => console.log(error));
+          //.
+          .catch(error => {
+            // Handle network error
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+              // http.ClientRequest in node.js
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+          });
+
       };
 
 
@@ -77,11 +125,13 @@ const SignInScreen = ({ navigation }) => {
                             value={email}
                             placeholder="Email"
                             placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium }}
+                            style={{ ...Fonts.black16Medium } }
                             keyboardType="email-address"
                             onChangeText={text => setEmail(text)}
+                            
                         />
                     </View>
+                    
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={password}
@@ -90,8 +140,10 @@ const SignInScreen = ({ navigation }) => {
                             style={{ ...Fonts.black16Medium }}
                             secureTextEntry={true}
                             onChangeText={text => setPassword(text)}
+                            
                         />
                     </View>
+                    
                     {forGotPassword()}
                     <TouchableOpacity
                         activeOpacity={0.9}
