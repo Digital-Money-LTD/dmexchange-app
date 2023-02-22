@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View, SafeAreaView, StatusBar, Image, StyleSheet, FlatList } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import  AuthUser from "../../Api/AuthUser";
+
 
 const popularCurrenciesList = [
     {
@@ -52,24 +53,7 @@ const popularCurrenciesList = [
     }
 ];
 
-const portfolioList = [
-    {
-        id: '1',
-        image: require('../../assets/images/crypto_icon/btc.png'),
-        name: 'BTC',
-        amount: '1,45,250',
-        isPositive: true,
-        percentage: 20,
-    },
-    {
-        id: '2',
-        image: require('../../assets/images/crypto_icon/eth.png'),
-        name: 'ETH',
-        amount: '2,50,245',
-        isPositive: false,
-        percentage: 3,
-    },
-];
+
 
 const HomeScreen = ({ navigation, changeIndex }) => {
     const { getRequest, logout } = AuthUser();
@@ -139,29 +123,21 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                     <>
                         <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, }}>
                         <View style={styles.userWelcomeContainerStyle}>
-                            <View>
+                            {/*<View>
                                 <Text style={{ ...Fonts.gray17Medium, }}>Welcome</Text>
                                 <Text style={{ ...Fonts.black22Bold, marginTop: Sizes.fixPadding - 5.0, }}>
                                 {userdetail.name}
                                 </Text>
-                            </View>
-                            <TouchableOpacity
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                    changeIndex({ index: 4 })
-                                    //navigation.push('BottomTabScreen', { index: 4 })
-                                }
-                            >
-                                <Image source={require('../../assets/images/user/user_14.jpg')}
-                                    style={{ height: 60.0, width: 60.0, borderRadius: 15.0 }}
-                                />
-                            </TouchableOpacity>
+                            </View>*/}
+                            <View style={styles.container}>
+                                 <Ionicons name="qr-code-sharp" size={20} color="#007AFF" />
+                             </View>
+                            
                         </View>
                     </View>
 
                         {balanceAndProfitInfo()}
-                        {myPortfolioTitle()}
-                        {portfolioInfo()}
+                        {ButtonBarStart()}
                         {popularCurrenciesTitle()}
 
                     </>
@@ -180,106 +156,82 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             <View style={{
                 flexDirection: 'row', justifyContent: 'space-between',
                 marginHorizontal: Sizes.fixPadding * 2.0,
-                marginTop: Sizes.fixPadding - 5.0,
+                marginTop: Sizes.fixPadding - 2.0,
                 marginBottom: Sizes.fixPadding,
+                marginLeft: Sizes.fixPadding * 3.0,
             }}>
-                <Text style={{ ...Fonts.black19SemiBold }}>Popular Currencies</Text>
+                <Text style={{ ...Fonts.black19Bold }}>Assets</Text>
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => navigation.push('BottomTabScreen', { index: 2 })}
+                    style={styles.AddAsset}
                 >
-                    <Text style={{ ...Fonts.primaryColor17Medium }}>See More</Text>
+                    <Ionicons name="add" size={24} color="white" />
                 </TouchableOpacity>
 
             </View>
         )
     }
 
-    function myPortfolioTitle() {
-        return (
-            <Text style={{
-                ...Fonts.black19SemiBold,
-                marginHorizontal: Sizes.fixPadding * 2.0,
-                marginTop: Sizes.fixPadding + 5.0,
-
-            }}>
-                My Portfolio
-            </Text>
-        )
-    }
-
+    
+//Balance Card
     function balanceAndProfitInfo() {
         return (
             <View style={{
                 paddingHorizontal: Sizes.fixPadding * 2.0,
                 marginTop: 20.0,
-            }}>
+            }}> 
+
+            {/*User overall wallet balance*/}
                 <View style={styles.balanceAndProfitInfoContainerStyle}>
-                    <Text style={{ ...Fonts.white16Medium }}>Balance</Text>
+                    <Text style={{ ...Fonts.white16Medium }}>Your Balance</Text>
                     <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}>$4,50,933</Text>
-                    <Text style={{ ...Fonts.white16Medium, marginBottom: Sizes.fixPadding, marginTop: Sizes.fixPadding + 5.0 }}>
-                        Monthly Profit
-                    </Text>
-                    <Text style={{ ...Fonts.white25Bold }}>$12,484</Text>
                 </View>
-                <View style={{ position: 'absolute', right: 40.0, bottom: 20.0, }}>
-                    <View style={styles.balanceAndProfitPercentageInfoStyle}>
-                        <AntDesign name="caretup" size={12} color={Colors.whiteColor} />
-                        <Text style={{ ...Fonts.whiteSemiBold, marginLeft: 7.0 }}>+10%</Text>
-                    </View>
+
+                {/*User profile picture*/}
+                <View style={{ position: 'absolute', right: 40.0, bottom: 60.0, }}>
+                    <TouchableOpacity
+                                activeOpacity={0.9}
+                                onPress={() =>
+                                    changeIndex({ index: 4 })
+                                    //navigation.push('BottomTabScreen', { index: 4 })
+                                }
+                            >
+                                <Image source={require('../../assets/images/user/user_14.jpg')}
+                                    style={{ height: 40.0, width: 40.0, borderRadius: 15.0 }}
+                                />
+                            </TouchableOpacity>
                 </View>
             </View>
         )
     }
+//this function defines the send , receive and buy buttons
+    function ButtonBarStart() {
 
-    function portfolioInfo() {
-
-        const renderItem = ({ item }) => (
-
-            <View style={styles.portfolioContainerStyle}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={item.image}
-                        style={{ height: 60.0, width: 60.0, borderRadius: 30.0 }}
-                        resizeMode="contain"
-                    />
-                    <Text style={{ marginLeft: Sizes.fixPadding, ...Fonts.black17Medium }}>{item.name}</Text>
-                </View>
-                <View>
-                    <Text style={{ ...Fonts.gray17Medium, marginBottom: Sizes.fixPadding - 3.0 }}>Portfolio</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{ ...Fonts.black22Bold }}>
-                            {`$${item.amount}`}
-                        </Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            {item.isPositive == true ?
-                                <AntDesign name="caretup" size={12} color={Colors.primaryColor} style={{ marginTop: 5.0 }} />
-                                :
-                                <AntDesign name="caretdown" size={12} color="red" style={{ marginTop: 2.5 }} />
-                            }
-                            {
-                                item.isPositive == true ?
-                                    <Text style={{ ...Fonts.primaryColor17Medium, marginLeft: Sizes.fixPadding - 3.0 }}>
-                                        {`+${item.percentage}%`}
-                                    </Text> :
-                                    <Text style={{ ...Fonts.red17Medium, marginLeft: Sizes.fixPadding - 3.0 }}>
-                                        {`-${item.percentage}%`}
-                                    </Text>
-                            }
-                        </View>
-                    </View>
-                </View>
-            </View>
-        )
+        const ButtonBar = () => {
+            return (
+              <View style={styles.Buttoncontainer}>
+                    <TouchableOpacity style={styles.button}>
+                        <Ionicons name="arrow-up-circle" size={30} color="black" />
+                        <Text style={styles.buttonText}>Send</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Ionicons name="arrow-down-circle" size={30} color="black" />
+                        <Text style={styles.buttonText}>Receive</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Ionicons name="wallet" size={30} color="black" />
+                        <Text style={styles.buttonText}>Buy</Text>
+                    </TouchableOpacity>
+              </View>
+            );
+          };
+          
 
         return (
-            <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={portfolioList}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={renderItem}
-                contentContainerStyle={{ paddingHorizontal: Sizes.fixPadding }}
-            />
+            <View>
+                <ButtonBar />
+             </View>
         )
     }
 
@@ -292,6 +244,36 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: Sizes.fixPadding * 2.0,
     },
+    AddAsset:{
+        backgroundColor:'black',
+        borderRadius:50,
+        marginRight:5,
+       
+    },
+   
+    Buttoncontainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: 10,
+      },
+      button: {
+        flex: 1,
+        backgroundColor: '',
+        borderRadius: 5,
+        padding: 10,
+        alignItems: 'center',
+      },
+      buttonText: {
+        color: 'black',
+        fontSize: 16,
+        marginTop: 5,
+    },
+      
+      
+
+
+
     popularCurrenciesContainerStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
