@@ -116,25 +116,17 @@ const HomeScreen = ({ navigation, changeIndex }) => {
     );
 
     return (
+        
         <SafeAreaView style={{ flex: 1, }}>
-            <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
+            <StatusBar translucent={false} backgroundColor={Colors.primaryColor}  />
             <FlatList
                 ListHeaderComponent={
                     <>
-                        <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, }}>
-                        <View style={styles.userWelcomeContainerStyle}>
-                            {/*<View>
-                                <Text style={{ ...Fonts.gray17Medium, }}>Welcome</Text>
-                                <Text style={{ ...Fonts.black22Bold, marginTop: Sizes.fixPadding - 5.0, }}>
-                                {userdetail.name}
-                                </Text>
-                            </View>*/}
-                            <View style={styles.container}>
-                                 <Ionicons name="qr-code-sharp" size={20} color="#007AFF" />
-                             </View>
-                            
-                        </View>
-                    </View>
+    
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginRight: 25,   }}>
+                            <Ionicons name="notifications-outline" size={20} color="#007AFF" style={{ marginRight: 10 }} />
+                            <Ionicons name="qr-code-sharp" size={20} color="#007AFF" />
+                        </View>     
 
                         {balanceAndProfitInfo()}
                         {ButtonBarStart()}
@@ -176,14 +168,39 @@ const HomeScreen = ({ navigation, changeIndex }) => {
     
 //Balance Card
     function balanceAndProfitInfo() {
+         const toggleDropdown = () => {
+            setShowDropdown(!showDropdown);
+          };
+          const [showDropdown, setShowDropdown] = useState(false);
+          const walletNames = ['Wallet 1', 'Wallet 2', 'Wallet 3'];
+          
         return (
             <View style={{
                 paddingHorizontal: Sizes.fixPadding * 2.0,
                 marginTop: 20.0,
             }}> 
-
+            
             {/*User overall wallet balance*/}
                 <View style={styles.balanceAndProfitInfoContainerStyle}>
+               
+
+                <View style={{ flexDirection: 'row', alignItems: 'center',paddingBottom:20 }}>
+                    <Text style={{ marginRight: 10, color:"white",  }}>Main Wallet</Text>
+                    <TouchableOpacity onPress={toggleDropdown}>
+                        <Ionicons name="ios-arrow-down" size={24} color="white" />
+                    </TouchableOpacity>
+                    {showDropdown && (
+                        <View style={{ position: 'absolute', left: 0, right: 0, marginTop: 10 }}>
+                        {walletNames.map((name) => (
+                            <TouchableOpacity key={name} onPress={() => console.log(name)}>
+                            <Text>{name}</Text>
+                            </TouchableOpacity>
+                        ))}
+                        </View>
+                    )}
+                </View>
+
+
                     <Text style={{ ...Fonts.white16Medium }}>Your Balance</Text>
                     <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}>$4,50,933</Text>
                 </View>
