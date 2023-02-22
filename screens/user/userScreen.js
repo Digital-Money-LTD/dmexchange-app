@@ -28,10 +28,12 @@ const UserScreen = ({ navigation }) => {
     }
 
     const handleLogout = () => {
-        AsyncStorage.removeItem('api_token');
-        setIsLoggedIn(false);
-        navigater.navigate('SignIn');
-      };
+    console.log('Logging out...'); // added this line to check if the function is called
+    AsyncStorage.removeItem('api_token');
+    setIsLoggedIn(false);
+    navigater.navigate('SignIn');
+};
+
 
 
     const [state, setState] = useState({
@@ -112,7 +114,7 @@ const UserScreen = ({ navigation }) => {
                     {informations(
                         {
                             icon: <MaterialCommunityIcons name="android" size={29} color="black" />,
-                            title: 'About CryptoX',
+                            title: 'About Digital Money',
                             description: 'v1.0.0'
                         }
                     )}
@@ -156,7 +158,10 @@ const UserScreen = ({ navigation }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() => updateState({ showLogoutDialog: true })}
+                onPress={() => {
+                        console.log('Logout button pressed.'); // add this line to check if the button is pressed
+                        updateState({ showLogoutDialog: true });
+                    }}
                 style={{
                     backgroundColor: Colors.whiteColor,
                     marginTop: Sizes.fixPadding,
