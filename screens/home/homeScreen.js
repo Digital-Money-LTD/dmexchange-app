@@ -58,9 +58,11 @@ const popularCurrenciesList = [
 const HomeScreen = ({ navigation, changeIndex }) => {
     const { getRequest, logout } = AuthUser();
     const [userdetail, setUserdetails] = useState('');
+    const [balance, setBalance] = useState(0);
 
     useEffect(()=>{
         fetchUserDetail();
+        fetchUserTotalAvailableBalance();
     }, []);
 
 
@@ -68,9 +70,19 @@ const HomeScreen = ({ navigation, changeIndex }) => {
          getRequest('get-user')
          .then((response)=>{
             setUserdetails(response.data);
-            console.log(response.data);
+            //console.log(response.data);
          });
     }
+
+    const fetchUserTotalAvailableBalance = () =>{
+        getRequest('total-available-price')
+        //.then((data) => setBalance(data.formattedPrice))
+
+        .then((response)=>{
+            setBalance(response.data);
+            console.log(response.formattedPrice);
+         });
+   }
 
 
     const renderItem = ({ item }) => (
@@ -202,7 +214,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
 
 
                     <Text style={{ ...Fonts.white16Medium }}>Your Balance</Text>
-                    <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}>$4,50,933</Text>
+                    <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}> { balance.formattedPrice }</Text>
                 </View>
 
                 {/*User profile picture*/}
