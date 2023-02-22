@@ -151,6 +151,8 @@ const SignInScreen = ({ navigation }) => {
                         style={styles.continueButtonStyle}>
                         <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
                     </TouchableOpacity>
+                    {sendOTPInfo()}
+                    {loginWithGoogleButton()}
                     <View>
                         <TouchableOpacity onPress={() => navigation.push('Register')}>
                                 <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
@@ -158,8 +160,7 @@ const SignInScreen = ({ navigation }) => {
                                 </Text>
                         </TouchableOpacity>
                     </View>
-                    {sendOTPInfo()}
-                    {loginWithGoogleButton()}
+                   
                     
                 </ScrollView>
             </View>

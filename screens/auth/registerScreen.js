@@ -45,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
       <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <Feather
+        {/*<Feather
           name="arrow-left"
           size={25}
           color="black"
@@ -56,7 +56,7 @@ const RegisterScreen = ({ navigation }) => {
             zIndex: 1
           }}
           onPress={() => navigation.pop()}
-                />
+                />*/}
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{
