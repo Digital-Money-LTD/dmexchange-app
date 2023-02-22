@@ -16,6 +16,12 @@ const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
+    const [nameError, setNameError] = useState(null);
+    const [emailError, setEmailError] = useState(null);
+    const [passwordError, setPasswordError] = useState(null);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(null);
+
+
 
     let register_data = {
       name: name,
@@ -26,42 +32,62 @@ const RegisterScreen = ({ navigation }) => {
 
    const handleRegister = (e) => {
   e.preventDefault();
-  if (!name || !email || !password || !password_confirmation) {
-    Alert.alert('Please fill out all fields');
-    return;
+
+  let errors = {};
+
+  if (!name) {
+    errors.name = "Please enter your Username";
   }
-  if (password !== password_confirmation) {
-    Alert.alert('Passwords do not match');
-    return;
+
+  if (!email) {
+    errors.email = "Please enter your email";
+  } else if (!/\S+@\S+\.\S+/.test(email)) {
+    errors.email = "Please enter a valid email";
   }
-  const emailRegex = /\S+@\S+\.\S+/;
-  if (!emailRegex.test(email)) {
-    Alert.alert('Invalid email address');
-    return;
+
+  if (!password) {
+    errors.password = "Please enter a password";
+  } else if (password.length < 8) {
+    errors.password = "Password must be at least 8 characters";
   }
-  const register_data = {
-    name: name,
-    email: email,
-    password: password,
-    password_confirmation: password_confirmation
-  };
-  postRequest('register', register_data)
-    .then(response => {
-      if (response.data.status === 400) {
-        Alert.alert('Input Errors' + response.data.message);
-      } else if (response.data.status === 200) {
-        Alert.alert(response.data.message);
-        setUsername('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        navigater.navigate('SignIn');
-      }
-    })
-    .catch(error => console.log(error));
+
+  if (!password_confirmation) {
+    errors.confirmPassword = "Please confirm your password";
+  } else if (password_confirmation !== password) {
+    errors.confirmPassword = "Passwords do not match";
+  }
+
+  setNameError(errors.name || null);
+  setEmailError(errors.email || null);
+  setPasswordError(errors.password || null);
+  setConfirmPasswordError(errors.confirmPassword || null);
+
+  if (Object.keys(errors).length === 0) {
+    const register_data = {
+      name: name,
+      email: email,
+      password: password,
+      password_confirmation: password_confirmation
+    };
+
+    postRequest('register', register_data)
+      .then(response => {
+        if (response.data.status === 400){
+          setEmailError(response.data.message.email || null);
+          setPasswordError(response.data.message.password || null);
+          setConfirmPasswordError(response.data.message.password_confirmation || null);
+        } else if (response.data.status === 200) {
+          Alert.alert(response.data.message);
+          setUsername('');
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('');
+          navigater.navigate('SignIn');
+        }
+      })
+      .catch(error => console.log(error));
+  }
 };
-
-
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
@@ -93,36 +119,37 @@ const RegisterScreen = ({ navigation }) => {
                     />
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
-                            value={name}
-                            placeholder="Username"
-                            placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium }}
-                            onChangeText={text => setUsername(text)}
+                          value={name}
+                          placeholder="Username"
+                          placeholderTextColor={Colors.blackColor}
+                          style={{ ...Fonts.black16Medium }}
+                          onChangeText={text => setUsername(text)}
                         />
-                        
-                    </View>
+                        {nameError && <Text style={{ color: 'red' }}>{nameError}</Text>}
+                      </View>
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
-                            value={email}
-                            placeholder="Email"
-                            placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium }}
-                            keyboardType="email-address"
-                            onChangeText={text => setEmail(text)}
+                          value={email}
+                          placeholder="Email"
+                          placeholderTextColor={Colors.blackColor}
+                          style={{ ...Fonts.black16Medium }}
+                          keyboardType="email-address"
+                          onChangeText={text => setEmail(text)}
                         />
-                        
-                    </View>
-                    <View style={styles.textFieldContainerStyle}>
+                        {emailError && <Text style={{ color: 'red' }}>{emailError}</Text>}
+                      </View>
+                   <View style={styles.textFieldContainerStyle}>
                         <TextInput
-                            value={password}
-                            placeholder="Password"
-                            placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium }}
-                            secureTextEntry={true}
-                            onChangeText={text => setPassword(text)}
+                          value={password}
+                          placeholder="Password"
+                          placeholderTextColor={Colors.blackColor}
+                          style={{ ...Fonts.black16Medium }}
+                          secureTextEntry={true}
+                          onChangeText={text => setPassword(text)}
                         />
-                      
+                      {passwordError && <Text style={{ color: 'red' }}>{passwordError}</Text>}
                     </View>
+
                     <View style={styles.textFieldContainerStyle}>
                         <TextInput
                             value={password_confirmation}
@@ -132,7 +159,7 @@ const RegisterScreen = ({ navigation }) => {
                             secureTextEntry={true}
                             onChangeText={text => setConfirmPassword(text)}
                         />
-                       
+                       {confirmPasswordError && <Text style={{ color: 'red' }}>{confirmPasswordError}</Text>}
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.9}

@@ -85,6 +85,7 @@ const SignInScreen = ({ navigation }) => {
 
     const handleLogin = (e) => {
         e.preventDefault();
+        
           postRequest('login', login_data)
           .then(response => {
             if (response.data.status === 401 ){
