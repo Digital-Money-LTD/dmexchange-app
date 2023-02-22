@@ -7,6 +7,8 @@ import { Feather } from '@expo/vector-icons';
 import  AuthUser from "../../Api/AuthUser";
 
 
+
+
 const RegisterScreen = ({ navigation }) => {
     const navigater = useNavigation();
     const { postRequest } = AuthUser();
@@ -22,23 +24,43 @@ const RegisterScreen = ({ navigation }) => {
       password_confirmation: password_confirmation
     };
 
-    const handleRegister = (e) => {
-      e.preventDefault();
-        postRequest('register', register_data)
-        .then(response => {
-          if (response.data.status === 400){
-            Alert.alert("Input Errors" + response.data.message);
-          } else if (response.data.status === 200) {
-            Alert.alert(response.data.message);
-            setUsername('');
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-            navigater.navigate('SigninScreen');
-          }
-        })
-        .catch(error => console.log(error));
-    };
+   const handleRegister = (e) => {
+  e.preventDefault();
+  if (!name || !email || !password || !password_confirmation) {
+    Alert.alert('Please fill out all fields');
+    return;
+  }
+  if (password !== password_confirmation) {
+    Alert.alert('Passwords do not match');
+    return;
+  }
+  const emailRegex = /\S+@\S+\.\S+/;
+  if (!emailRegex.test(email)) {
+    Alert.alert('Invalid email address');
+    return;
+  }
+  const register_data = {
+    name: name,
+    email: email,
+    password: password,
+    password_confirmation: password_confirmation
+  };
+  postRequest('register', register_data)
+    .then(response => {
+      if (response.data.status === 400) {
+        Alert.alert('Input Errors' + response.data.message);
+      } else if (response.data.status === 200) {
+        Alert.alert(response.data.message);
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        navigater.navigate('SignIn');
+      }
+    })
+    .catch(error => console.log(error));
+};
+
 
 
   return (

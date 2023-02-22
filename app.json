@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Digital Money",
-    "slug": "DM exchange",
+    "slug": "DM-exchange",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/c8b8ae6c-37e1-4983-9ffb-f026b5de4ce3"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -31,6 +32,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c8b8ae6c-37e1-4983-9ffb-f026b5de4ce3"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

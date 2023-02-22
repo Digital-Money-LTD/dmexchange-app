@@ -37,8 +37,14 @@ const errorstyles= StyleSheet.create({
     },
   });
   
+const validateEmail = email => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
-
+const validatePassword = password => {
+  return password.length >= 6;
+};
 
 // Define the SignInScreen component
 const SignInScreen = ({ navigation }) => {
@@ -48,14 +54,29 @@ const SignInScreen = ({ navigation }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [errors, setErrors] = useState([]);
     const [isError, setIsError] = useState(false);
 
-    
+    const handleEmailChange = text => {
 
+                    setEmail(text);
+                    if (validateEmail(text)) {
+                        setEmailError('');
+                    } else {
+                        setEmailError('Invalid email');
+                    }
+                    };
 
-
+                    const handlePasswordChange = text => {
+                    setPassword(text);
+                    if (validatePassword(text)) {
+                        setPasswordError('');
+                    } else {
+                        setPasswordError('Password must be at least 6 characters');
+                    }
+        };
 
     let login_data = {
         email: email,
@@ -81,6 +102,7 @@ const SignInScreen = ({ navigation }) => {
               navigater.navigate('BottomTabScreen');
             }
           })
+
           //.
           .catch(error => {
             // Handle network error
@@ -104,7 +126,6 @@ const SignInScreen = ({ navigation }) => {
 
       };
 
-
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
             <StatusBar backgroundColor={Colors.primaryColor} />
@@ -120,31 +141,32 @@ const SignInScreen = ({ navigation }) => {
                     {logo()}
                     {signInText()}
                     
-                    <View style={styles.textFieldContainerStyle}>
-                        <TextInput
-                            value={email}
-                            placeholder="Email"
-                            placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium } }
-                            keyboardType="email-address"
-                            onChangeText={text => setEmail(text)}
-                            
-                        />
-                    </View>
+               <View style={styles.textFieldContainerStyle}>
+                <TextInput
+                    value={email}
+                    placeholder="Email"
+                    placeholderTextColor={Colors.blackColor}
+                    style={{ ...Fonts.black16Medium } }
+                    keyboardType="email-address"
+                    onChangeText={handleEmailChange}
+                />
+                </View>
+               <Text style={errorstyles.error}>{emailError}</Text>
                     
-                    <View style={styles.textFieldContainerStyle}>
-                        <TextInput
-                            value={password}
-                            placeholder="Password"
-                            placeholderTextColor={Colors.blackColor}
-                            style={{ ...Fonts.black16Medium }}
-                            secureTextEntry={true}
-                            onChangeText={text => setPassword(text)}
-                            
-                        />
+              <View style={styles.textFieldContainerStyle}>
+                    <TextInput
+                        value={password}
+                        placeholder="Password"
+                        placeholderTextColor={Colors.blackColor}
+                        style={{ ...Fonts.black16Medium }}
+                        secureTextEntry={true}
+                        onChangeText={handlePasswordChange}
+                    />
                     </View>
+                    <Text style={errorstyles.error}>{passwordError}</Text>
                     
                     {forGotPassword()}
+
                     <TouchableOpacity
                         activeOpacity={0.9}
                         onPress={handleLogin}
@@ -168,21 +190,16 @@ const SignInScreen = ({ navigation }) => {
         </SafeAreaView>
     )
 
-   
-    
-
-
-
-function continueButton() {
-        return (
-            <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.push('Register')}
-                style={styles.continueButtonStyle}>
-                <Text style={{ ...Fonts.blackRegular}}>Login</Text>
-            </TouchableOpacity>
-        )
-    }
+    function continueButton() {
+            return (
+                <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => navigation.push('Register')}
+                    style={styles.continueButtonStyle}>
+                    <Text style={{ ...Fonts.blackRegular}}>Login</Text>
+                </TouchableOpacity>
+            )
+        }
 //function that puts the login with facebook button back on or off
 
    {/*} function loginWithFacebookButton() {
@@ -234,38 +251,38 @@ function continueButton() {
         )
     }
 
-    function signInText() {
-        return (
-            <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginVertical: Sizes.fixPadding + 5.0 }}>
-                {/*Digital Money Login*/}
-            </Text>
-        )
-    }
+        function signInText() {
+            return (
+                <Text style={{ ...Fonts.gray16Bold, alignSelf: 'center', marginVertical: Sizes.fixPadding + 5.0 }}>
+                    {/*Digital Money Login*/}
+                </Text>
+            )
+        }
 }
 
 {/*Forgot password*/}
 
-const forGotPassword = () => {
-    return (
-        <View>
-            {/* Other form fields */}
-            <TouchableOpacity onPress={() => navigate('ResetPassword')}>
-                <Text style={{ ...Fonts.blackRegular,position: 'absolute', right: 10, padding: 10, color: Colors.orangeColor}}>Forgot Password?</Text>
-            </TouchableOpacity>
-        </View>
-    );
+    const forGotPassword = () => {
+            return (
+                <View>
+                    {/* Other form fields */}
+                    <TouchableOpacity onPress={() => navigate('ResetPassword')}>
+                        <Text style={{ ...Fonts.blackRegular,position: 'absolute', right: 10, padding: 10, color: Colors.orangeColor}}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                </View>
+            );
 }
-const registerButton = () => {
-    return (
-        <View>
-       
-        <TouchableOpacity onPress={() => navigation.push('registerScreen')}>
-                <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
-                Don't have an account? <Text style={{ color: Colors.orangeColor}}>Get Started</Text>
-                </Text>
-            </TouchableOpacity>
-    </View>
-    )
+    const registerButton = () => {
+            return (
+                <View>
+            
+                <TouchableOpacity onPress={() => navigation.push('registerScreen')}>
+                        <Text style={{ ...Fonts.blackRegular, alignSelf: 'center', marginTop: 20 }}>
+                        Don't have an account? <Text style={{ color: Colors.orangeColor}}>Get Started</Text>
+                        </Text>
+                    </TouchableOpacity>
+            </View>
+            )
 }
 
 
