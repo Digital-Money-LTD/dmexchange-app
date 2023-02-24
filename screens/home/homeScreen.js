@@ -135,7 +135,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                 ListHeaderComponent={
                     <>
     
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginRight: 25,   }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginRight: 25,  marginTop: 10 }}>
                             <Ionicons name="notifications-outline" size={20} color="#007AFF" style={{ marginRight: 10 }} />
                             <Ionicons name="qr-code-sharp" size={20} color="#007AFF" />
                         </View>     
@@ -193,44 +193,42 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             }}> 
             
             {/*User overall wallet balance*/}
-                <View style={styles.balanceAndProfitInfoContainerStyle}>
+            <View style={styles.balanceAndProfitInfoContainerStyle}>
                
 
                 <View style={{ flexDirection: 'row', alignItems: 'center',paddingBottom:20 }}>
-                    <Text style={{ marginRight: 10, color:"white",  }}>Main Wallet</Text>
-                    <TouchableOpacity onPress={toggleDropdown}>
-                        <Ionicons name="ios-arrow-down" size={24} color="white" />
-                    </TouchableOpacity>
-                    {showDropdown && (
+                        <Text style={{ marginRight: 10, color:"white",  }}>Main Wallet</Text>
+                        <TouchableOpacity onPress={toggleDropdown}>
+                            <Ionicons name="ios-arrow-down" size={24} color="white" />
+                        </TouchableOpacity>
+                        {showDropdown && (
                         <View style={{ position: 'absolute', left: 0, right: 0, marginTop: 10 }}>
                         {walletNames.map((name) => (
                             <TouchableOpacity key={name} onPress={() => console.log(name)}>
-                            <Text>{name}</Text>
+                                 <Text>{name}</Text>
                             </TouchableOpacity>
                         ))}
                         </View>
                     )}
                 </View>
-
-
+            
                     <Text style={{ ...Fonts.white16Medium }}>Your Balance</Text>
                     <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}> { balance.formattedPrice }</Text>
                 </View>
 
                 {/*User profile picture*/}
-                <View style={{ position: 'absolute', right: 40.0, bottom: 60.0, }}>
+                <View style={{ position: 'absolute', top: 10.0, right: 30.0 }}>
                     <TouchableOpacity
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                    changeIndex({ index: 4 })
-                                    //navigation.push('BottomTabScreen', { index: 4 })
-                                }
-                            >
-                                <Image source={require('../../assets/images/user/user_14.jpg')}
-                                    style={{ height: 40.0, width: 40.0, borderRadius: 15.0 }}
-                                />
-                            </TouchableOpacity>
+                        activeOpacity={0.9}
+                        onPress={() => changeIndex({ index: 4 })}
+                    >
+                        <Image
+                        source={require('../../assets/images/user/user_14.jpg')}
+                        style={{ height: 40.0, width: 40.0, borderRadius: 15.0 }}
+                        />
+                    </TouchableOpacity>
                 </View>
+
             </View>
         )
     }
@@ -252,6 +250,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                         <Ionicons name="wallet" size={30} color="black" />
                         <Text style={styles.buttonText}>Buy</Text>
                     </TouchableOpacity>
+                   
               </View>
             );
           };
