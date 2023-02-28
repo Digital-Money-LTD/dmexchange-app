@@ -12,7 +12,8 @@ import {
     ScrollView,
     BackHandler,
     Alert,
-    TextInput
+    TextInput,
+    ActivityIndicator
 } from "react-native";
 import  AuthUser from "../../Api/AuthUser";
 
@@ -51,13 +52,14 @@ const SignInScreen = ({ navigation }) => {
 
     const navigater = useNavigation();
     const {http, postRequest, setToken} = AuthUser();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [errors, setErrors] = useState([]);
     const [isError, setIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // Add isLoading state
 
     const handleEmailChange = text => {
 
@@ -84,10 +86,13 @@ const SignInScreen = ({ navigation }) => {
     };
 
     const handleLogin = (e) => {
+        setIsLoading(true);
         e.preventDefault();
-        
-          postRequest('login', login_data)
+        setIsLoading(true); // Set isLoading to true
+
+        postRequest('login', login_data)
           .then(response => {
+            setIsLoading(false); // Set isLoading back to false
             if (response.data.status === 401 ){
               console.log(response.data);
               Alert.alert(response.data.message);
@@ -103,7 +108,7 @@ const SignInScreen = ({ navigation }) => {
               navigater.navigate('BottomTabScreen');
             }
           })
-
+          
           //.
           .catch(error => {
             // Handle network error
@@ -171,8 +176,14 @@ const SignInScreen = ({ navigation }) => {
                     <TouchableOpacity
                         activeOpacity={0.9}
                         onPress={handleLogin}
-                        style={styles.continueButtonStyle}>
-                        <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
+                        style={styles.continueButtonStyle}
+                        disabled={isLoading}
+                        >
+                        {!isLoading ? (
+                            <Text style={{ ...Fonts.white16SemiBold }}>Login</Text>
+                        ) : (
+                            <ActivityIndicator size="small" color="#fff" />
+                        )}
                     </TouchableOpacity>
                     {sendOTPInfo()}
                     {loginWithGoogleButton()}
