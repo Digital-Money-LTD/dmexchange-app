@@ -1,10 +1,37 @@
-import React, { useState } from "react";
-import { SafeAreaView, Text, View, StatusBar, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, Text, View, StatusBar, TouchableOpacity, StyleSheet, ScrollView  } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { OutlinedTextField } from 'rn-material-ui-textfield';
+import { Picker } from '@react-native-picker/picker';
 import { Feather } from '@expo/vector-icons';
+import  AuthUser from "../../Api/AuthUser";
 
 const DepositScreen = ({ navigation }) => {
+    const [selectedValue, setSelectedValue] = useState('');
+    const { getRequest, logout } = AuthUser();
+    const [activeWallets, setActiveWallets] = useState([]);
+    const [latestAddress, setLatestAddress] = useState('');
+    const [address, setSelectedAddress] = useState('');
+
+    const handleSelectValue = (value) => {
+        setSelectedAddress(value);
+        
+      };
+
+    useEffect(()=>{
+            getRequest('get-wallets')
+            .then((response)=>{
+                setActiveWallets(response.data);
+            });
+
+            getRequest('latest-address/14')
+            getRequest('latest-address/' + address)
+            .then((response)=>{
+               setLatestAddress(response.data);
+               //console.log(response.data);
+            });
+       
+    }, []); 
 
     const [state, setState] = useState({
         amount: '10',
@@ -23,6 +50,20 @@ const DepositScreen = ({ navigation }) => {
                 contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
             >
                 {currentBalanceInfo()}
+                <View>
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={handleSelectValue}
+                >
+                    {activeWallets.map(item => (
+                        <Picker.Item 
+                            key={item.id} 
+                            label={item.coin} 
+                            value={item.id} 
+                        />
+                    ))}
+                </Picker>
+                </View>
                 {amountTextField()}
                 {amountSelection()}
                 {minMaxLimitInfo()}
@@ -116,7 +157,7 @@ const DepositScreen = ({ navigation }) => {
     function processingTimeInfo() {
         return (
             <Text style={{ ...Fonts.black16Medium, alignSelf: 'center' }}>
-                Processing time upto 15 minutes
+                {latestAddress.address}
             </Text>
         )
     }
@@ -138,7 +179,7 @@ const DepositScreen = ({ navigation }) => {
                     marginBottom: Sizes.fixPadding * 3.0,
                     marginTop: Sizes.fixPadding - 5.0
                 }}>
-                    Current Balance
+                    Current Balance {address}
                 </Text>
             </View>
         )
