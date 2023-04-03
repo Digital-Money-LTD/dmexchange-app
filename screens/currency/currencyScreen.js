@@ -1,15 +1,66 @@
-import React, { useState } from "react";
-import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, Dimensions, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useRoute } from '@react-navigation/native';
+import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, Dimensions, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import { LineChart } from "react-native-chart-kit";
 import { BottomSheet } from "@rneui/themed";
 import { Snackbar } from 'react-native-paper';
 import { OutlinedTextField } from 'rn-material-ui-textfield';
+import SvgUri from 'react-native-svg';
+import  AuthUser from "../../Api/AuthUser";
+
+const svgUrl = 'https://staging.dmexchange.com/coin/dm.svg';
 
 const { width } = Dimensions.get('screen');
 
 const CurrencyScreen = ({ navigation }) => {
+    const { getRequest, logout } = AuthUser();
+    const route = useRoute();
+    const { walletdata } = route.params;
+    const [walletTransactions, setWallets] = useState([]);
+
+    useEffect(()=>{
+            getRequest('wallet-transactions/' + walletdata.id)
+            .then((response)=>{
+               setWallets(response.data);
+               //console.log(response.data);
+            });
+       
+    }, []);
+
+    const renderItem = ({ item }) => (
+        <TouchableOpacity
+            activeOpacity={0.9}
+            style={{
+                paddingHorizontal: Sizes.fixPadding * 2.0,
+                marginVertical: Sizes.fixPadding
+            }}
+        >
+            <View style={styles.popularCurrenciesContainerStyle}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+
+                    <SvgUri uri={svgUrl} width="65" height="20" />
+                    
+
+                    <View style={{ marginLeft: Sizes.fixPadding }}>
+                        <Text style={{ ...Fonts.black16Medium }}>{item.coin.name}</Text>
+                        <View style={{ flexDirection: 'row', marginTop: Sizes.fixPadding - 5.0 }}>
+                            <Text style={{ ...Fonts.blackMedium, marginRight: Sizes.fixPadding + 5.0 }}>
+                                {item.dollar_price}
+                            </Text>
+                            
+                            <Text style={{ ...Fonts.blackMedium }}>
+                                - {item.description}
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </TouchableOpacity>
+    );
+
+
 
     const [state, setState] = useState({
         showBottomSheet: false,
@@ -37,9 +88,23 @@ const CurrencyScreen = ({ navigation }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 {currencyNameAndAddRemoveInfo()}
                 {currencyInfo({ buyOrSell: 'Buy' })}
-                {chartInfo()}
+
                 {portfolioTitle()}
                 {portfolioInfo()}
+
+                <SafeAreaView style={{ flex: 1, }}>
+                    <StatusBar translucent={false} backgroundColor={Colors.primaryColor}  />
+                    <FlatList
+                        data={walletTransactions}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => `${item.id}`}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 7.0 }}
+                    />
+                    
+                </SafeAreaView>
+
+
                 {aboutCurrenyTitle()}
                 {aboutCurrencyDetail({
                     icon: require('../../assets/images/icon/rank.png'),
@@ -86,7 +151,7 @@ const CurrencyScreen = ({ navigation }) => {
                         onPress={() => navigation.goBack()}
                     />
                     <Text style={{ marginLeft: Sizes.fixPadding + 5.0, ...Fonts.black17Bold }}>
-                        BTC
+                        {walletdata.coin}
                     </Text>
                 </View>
                 <TouchableOpacity
@@ -116,10 +181,10 @@ const CurrencyScreen = ({ navigation }) => {
                     />
                 </View>
                 <View style={{ marginHorizontal: Sizes.fixPadding, }}>
-                    <Text style={{ ...Fonts.black15Medium }}>Current BTC {buyOrSell} Price</Text>
+                    <Text style={{ ...Fonts.black15Medium }}>Current {walletdata.wallet.coin.symbol} {buyOrSell} Price</Text>
                     <View style={{ flexDirection: 'row', marginTop: Sizes.fixPadding - 5.0 }}>
                         <Text style={{ ...Fonts.black16Bold, marginRight: Sizes.fixPadding + 10.0 }}>
-                            $39,914
+                        {walletdata.formatted_available_price}
                         </Text>
                         <AntDesign
                             name="caretup" size={12}
@@ -358,10 +423,10 @@ const CurrencyScreen = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: Sizes.fixPadding }}>
                     <View style={styles.portfolioInfoContainerStyle}>
                         <Text style={{ ...Fonts.gray16Medium }}>
-                            BTC Balance
+                            {walletdata.wallet.coin.symbol} Balance
                         </Text>
                         <Text style={{ ...Fonts.black17Bold }}>
-                            5.0107731
+                        {walletdata.available}
                         </Text>
                     </View>
                     <View style={styles.portfolioInfoContainerStyle}>
@@ -369,7 +434,7 @@ const CurrencyScreen = ({ navigation }) => {
                             Current Value
                         </Text>
                         <Text style={{ ...Fonts.black17Bold }}>
-                            $200,005
+                        {walletdata.formatted_available_price}
                         </Text>
                     </View>
                 </View>
