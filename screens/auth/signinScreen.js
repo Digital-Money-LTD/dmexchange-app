@@ -52,7 +52,7 @@ const SignInScreen = ({ navigation }) => {
 
     const navigater = useNavigation();
     const {http, postRequest, setToken} = AuthUser();
-   const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -116,6 +116,7 @@ const SignInScreen = ({ navigation }) => {
               // The request was made and the server responded with a status code
               // that falls out of the range of 2xx
               console.log(error.response.data);
+              
               console.log(error.response.status);
               console.log(error.response.headers);
             } else if (error.request) {
