@@ -34,4 +34,4 @@ function postRequest(url, params) {
 export {
     request,
     postRequest
-};
+}; 
