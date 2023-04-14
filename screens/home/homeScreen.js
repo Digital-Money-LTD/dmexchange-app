@@ -1,56 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View, SafeAreaView, StatusBar, Image, StyleSheet, FlatList } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import { Text, TouchableOpacity, View, SafeAreaView, StatusBar, Image, StyleSheet, FlatList, Table, Row, Rows  } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
+import SvgUri from 'react-native-svg';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import  AuthUser from "../../Api/AuthUser";
 
+const svgUrl = 'https://staging.dmexchange.com/coin/dm.svg';
 
-const popularCurrenciesList = [
+const portfolioList = [
     {
         id: '1',
-        logo: require('../../assets/images/crypto_icon/btc.png'),
-        name: 'Bitcoin',
-        sortName: 'BTC',
+        image: require('../../assets/images/crypto_icon/btc.png'),
+        name: 'BTC',
+        amount: '1,45,250',
         isPositive: true,
-        percentage: 4.72,
-        amount: '10,136.73'
+        percentage: 20,
     },
     {
         id: '2',
-        logo: require('../../assets/images/crypto_icon/eth.png'),
-        name: 'Ethereum',
-        sortName: 'ETH',
-        isPositive: true,
-        percentage: 6.86,
-        amount: '185.65',
-    },
-    {
-        id: '3',
-        logo: require('../../assets/images/crypto_icon/xrp.png'),
-        name: 'XRP',
-        sortName: 'XRP',
+        image: require('../../assets/images/crypto_icon/eth.png'),
+        name: 'ETH',
+        amount: '2,50,245',
         isPositive: false,
-        percentage: 8.95,
-        amount: '0.262855',
+        percentage: 3,
     },
-    {
-        id: '4',
-        logo: require('../../assets/images/crypto_icon/bch.png'),
-        name: 'Bitcoin Cash',
-        sortName: 'BCH',
-        isPositive: true,
-        percentage: 4.55,
-        amount: '297.98',
-    },
-    {
-        id: '5',
-        logo: require('../../assets/images/crypto_icon/ltc.png'),
-        name: 'Litecoin',
-        sortName: 'LTC',
-        isPositive: true,
-        percentage: 7.12,
-        amount: '71.24',
-    }
 ];
 
 const quickBuy = () => {
@@ -74,13 +48,21 @@ const quickBuy = () => {
   
 
 const HomeScreen = ({ navigation, changeIndex }) => {
+    const navigater = useNavigation();
     const { getRequest, logout } = AuthUser();
     const [userdetail, setUserdetails] = useState('');
     const [balance, setBalance] = useState(0);
+    const [wallets, setWallets] = useState([]);
 
     useEffect(()=>{
-        fetchUserDetail();
-        fetchUserTotalAvailableBalance();
+        //fetchUserDetail();
+        //fetchUserTotalAvailableBalance();
+        //const intervalId = setInterval(() => {
+            fetchUserDetail();
+            fetchUserWallets();
+            fetchUserTotalAvailableBalance();
+            //}, 1000);
+          //return () => clearInterval(intervalId);
     }, []);
 
 
@@ -88,17 +70,21 @@ const HomeScreen = ({ navigation, changeIndex }) => {
          getRequest('get-user')
          .then((response)=>{
             setUserdetails(response.data);
-            //console.log(response.data);
          });
     }
 
+    const fetchUserWallets = () =>{
+        getRequest('get-wallets')
+        .then((response)=>{
+           setWallets(response.data);
+           //console.log(response.data);
+        });
+   }
+
     const fetchUserTotalAvailableBalance = () =>{
         getRequest('total-available-price')
-        //.then((data) => setBalance(data.formattedPrice))
-
         .then((response)=>{
             setBalance(response.data);
-            console.log(response.formattedPrice);
          });
    }
 
@@ -110,36 +96,27 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                 paddingHorizontal: Sizes.fixPadding * 2.0,
                 marginVertical: Sizes.fixPadding
             }}
-            onPress={() => navigation.push('Currency')}
+            //onPress={() => navigation.push('Currency')}
+            onPress={() => navigater.navigate('Currency', { walletdata: item })}
         >
             <View style={styles.popularCurrenciesContainerStyle}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                    <Image
-                        source={item.logo}
-                        style={{ height: 55.0, width: 55.0, borderRadius: 27.5 }}
-                        resizeMode="contain"
-                    />
+
+                    <SvgUri uri={svgUrl} width="65" height="20" />
+                    
+
                     <View style={{ marginLeft: Sizes.fixPadding }}>
-                        <Text style={{ ...Fonts.black16Medium }}>{item.name}</Text>
+                        <Text style={{ ...Fonts.black16Medium }}>{item.coin}</Text>
                         <View style={{ flexDirection: 'row', marginTop: Sizes.fixPadding - 5.0 }}>
                             <Text style={{ ...Fonts.blackMedium, marginRight: Sizes.fixPadding + 5.0 }}>
-                                {item.sortName}
+                                {item.available}
                             </Text>
-                            <AntDesign
-                                name={item.isPositive == true ? "caretup" : "caretdown"} size={12}
-                                color={item.isPositive == true ? Colors.primaryColor : 'red'}
-                                style={{ marginTop: 3.0, marginRight: Sizes.fixPadding - 2.0 }}
-                            />
+                            
                             <Text style={{ ...Fonts.blackMedium }}>
-                                {item.percentage}%
+                                | {item.formatted_available_price}
                             </Text>
                         </View>
                     </View>
-                </View>
-                <View>
-                    <Text style={{ ...Fonts.black16SemiBold }}>
-                        ${item.amount}
-                    </Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -168,12 +145,13 @@ const HomeScreen = ({ navigation, changeIndex }) => {
 
                     </>
                 }
-                data={popularCurrenciesList}
+                data={wallets}
                 renderItem={renderItem}
                 keyExtractor={(item) => `${item.id}`}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: Sizes.fixPadding * 7.0 }}
             />
+            
         </SafeAreaView>
     )
     //quickbuy title
@@ -221,7 +199,6 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             </View>
         )
     }
-
     
 //Balance Card
     function balanceAndProfitInfo() {

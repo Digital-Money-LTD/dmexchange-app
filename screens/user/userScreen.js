@@ -27,12 +27,17 @@ const UserScreen = ({ navigation }) => {
          });
     }
 
-    const handleLogout = () => {
-    console.log('Logging out...'); // added this line to check if the function is called
-    AsyncStorage.removeItem('api_token');
-    setIsLoggedIn(false);
-    navigater.navigate('SignIn');
+   const handleLogout = async () => {
+            console.log('Logging out...');
+            try {
+                await AsyncStorage.removeItem('api_token'); // removing user token from device.
+                setIsLoggedIn(false);
+                navigater.navigate('SignIn');
+            } catch (error) {
+                console.log('Error while logging out:', error);
+            }
 };
+
 
 
 
