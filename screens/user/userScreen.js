@@ -21,7 +21,7 @@ const UserScreen = ({ navigation }) => {
 
 
     const fetchUserDetail = () =>{
-         getRequest('get-user')
+         getRequest('user-profile')
          .then((response)=>{
             setUserdetails(response.data);
          });
