@@ -53,7 +53,25 @@ const popularCurrenciesList = [
     }
 ];
 
-
+const quickBuy = () => {
+    return (
+      <View style={styles.containerQuickBuy}>
+        <TouchableOpacity style={styles.buttonQuickBuy}>
+          <Image source={require('../../assets/images/crypto_icon/btc.png')} style={styles.iconQuickBuy} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonQuickBuy}>
+          <Image source={require('../../assets/images/crypto_icon/eth.png')} style={styles.iconQuickBuy} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonQuickBuy}>
+          <Image source={require('../../assets/images/crypto_icon/bch.png')} style={styles.iconQuickBuy} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonQuickBuy}>
+          <Image source={require('../../assets/images/crypto_icon/ltc.png')} style={styles.iconQuickBuy} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  
 
 const HomeScreen = ({ navigation, changeIndex }) => {
     const { getRequest, logout } = AuthUser();
@@ -142,7 +160,11 @@ const HomeScreen = ({ navigation, changeIndex }) => {
 
                         {balanceAndProfitInfo()}
                         {ButtonBarStart()}
+                        {quickBuyTitle()}
+                        {quickBuy()}
                         {popularCurrenciesTitle()}
+
+
 
                     </>
                 }
@@ -154,17 +176,40 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             />
         </SafeAreaView>
     )
-
-    function popularCurrenciesTitle() {
+    //quickbuy title
+    function quickBuyTitle() {
         return (
             <View style={{
                 flexDirection: 'row', justifyContent: 'space-between',
                 marginHorizontal: Sizes.fixPadding * 2.0,
                 marginTop: Sizes.fixPadding - 2.0,
+                marginBottom: Sizes.fixPadding - 30.0,
+                marginLeft: Sizes.fixPadding * 3.0,
+            }}>
+                <Text style={{ ...Fonts.black19SemiBold, fontSize:16}}>Quick Buy</Text>
+                <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => navigation.push('BottomTabScreen', { index: 2 })}
+                    style={styles.AddAsset}
+                >
+                   
+                </TouchableOpacity>
+
+            </View>
+        )
+    }
+
+    //popular currencies title 
+    function popularCurrenciesTitle() {
+        return (
+            <View style={{
+                flexDirection: 'row', justifyContent: 'space-between',
+                marginHorizontal: Sizes.fixPadding * 2.0,
+                marginTop: Sizes.fixPadding - 20.0,
                 marginBottom: Sizes.fixPadding,
                 marginLeft: Sizes.fixPadding * 3.0,
             }}>
-                <Text style={{ ...Fonts.black19Bold }}>Assets</Text>
+                <Text style={{ ...Fonts.black19SemiBold, fontSize:16 }}>Wallets</Text>
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => navigation.push('BottomTabScreen', { index: 2 })}
@@ -336,7 +381,30 @@ const styles = StyleSheet.create({
         paddingVertical: 10.0,
         borderRadius: 20,
         elevation: 3.0,
-    }
+    },
+    containerQuickBuy: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        
+        borderRadius: 8,
+        padding: 20,
+        margin: 20,
+      },
+      buttonQuickBuy: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 60,
+        height: 60,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#ccc',
+      },
+      iconQuickBuy: {
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+      },
 })
 
 export default HomeScreen;

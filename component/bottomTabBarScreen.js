@@ -6,6 +6,7 @@ import PortfolioScreen from "../screens/portfolio/portfolioScreen";
 import UserScreen from "../screens/user/userScreen";
 import { Sizes, Colors, Fonts } from "../constants/styles";
 import { useFocusEffect } from '@react-navigation/native';
+import { Profiler } from "react";
 
 const BottomTabBarScreen = ({ navigation }) => {
 
@@ -55,18 +56,24 @@ const BottomTabBarScreen = ({ navigation }) => {
                 {bottomTabBarItem({
                     index: 1,
                     icon: require('../assets/images/icon/grey/home.png'),
+                    title: 'Home',
+                 
                 })}
                 {bottomTabBarItem({
                     index: 2,
                     icon: require('../assets/images/icon/grey/statistic.png'),
+                    title: 'Assets',
                 })}
+                
                 {bottomTabBarItem({
                     index: 3,
                     icon: require('../assets/images/icon/grey/portfolio.png'),
+                    title: 'Trade',
                 })}
                 {bottomTabBarItem({
                     index: 4,
                     icon: require('../assets/images/icon/grey/user.png'),
+                    title: 'Profile',
                 })}
             </View>
             {
@@ -83,18 +90,21 @@ const BottomTabBarScreen = ({ navigation }) => {
         </View>
     )
 
-    function bottomTabBarItem({ index, icon }) {
+    function bottomTabBarItem({ index, icon, title }) {
         return (
             <TouchableOpacity
-                activeOpacity={0.99}
-                onPress={() => changeIndex({ index: index })}
-            >
-                <Image
-                    source={icon}
-                    resizeMode="contain"
-                    style={{ height: 25.0, width: 25.0, tintColor: currentIndex == index ? Colors.primaryColor : null }}
-                />
-            </TouchableOpacity>
+            activeOpacity={0.99}
+            onPress={() => changeIndex({ index: index })}
+          >
+            <View style={{ alignItems: 'center' }}>
+              <Image
+                source={icon}
+                resizeMode="contain"
+                style={{ height: 25.0, width: 25.0, tintColor: currentIndex == index ? Colors.primaryColor : null }}
+              />
+              <Text style={{ ...Fonts.black13Medium, marginTop: 5 }}>{title}</Text>
+            </View>
+          </TouchableOpacity>
         )
     }
 }
