@@ -3,10 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, TouchableOpacity, View, SafeAreaView, StatusBar, Image, StyleSheet, FlatList, Table, Row, Rows  } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import SvgUri from 'react-native-svg';
+//import SvgUri from 'react-native-svg-uri';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import  AuthUser from "../../Api/AuthUser";
 
-const svgUrl = 'https://staging.dmexchange.com/coin/dm.svg';
+const logo = 'https://staging.dmexchange.com/coin/dm.svg';
 
 const portfolioList = [
     {
@@ -102,7 +103,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
             <View style={styles.popularCurrenciesContainerStyle}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
 
-                    <SvgUri uri={svgUrl} width="65" height="20" />
+                    <SvgUri uri={logo} width="65" height="20" />
                     
 
                     <View style={{ marginLeft: Sizes.fixPadding }}>
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
     AddAsset:{
         backgroundColor:'black',
         borderRadius:50,
-        marginRight:5,
+        mar0ginRight:5,
        
     },
    
