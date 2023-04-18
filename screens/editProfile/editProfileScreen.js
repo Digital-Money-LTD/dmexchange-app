@@ -70,7 +70,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='First Name'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.profile.first_name}
+                            value={userdetail.profile.first_name != null ? userdetail.profile.first_name : ''}
                             onChangeText={text => setFirstName(text)}
                         />
                         {errors.first_name && <Text style={{ color: 'red' }}>{errors.first_name[0]}</Text>}
@@ -80,7 +80,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='Last Name'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.profile.last_name}
+                            value={userdetail.profile.last_name != null ? userdetail.profile.last_name : ''}
                             onChangeText={text => setLastName(text)}
                         />
                         {errors.last_name && <Text style={{ color: 'red' }}>{errors.last_name[0]}</Text>}
@@ -90,7 +90,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='Date of Birth'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.profile.dob}
+                            value={userdetail.profile.dob != null ? userdetail.profile.dob : ''}
                             onChangeText={text => setDob(text)}
                         />
                          {errors.dob && <Text style={{ color: 'red' }}>{errors.dob[0]}</Text>}
@@ -100,7 +100,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='Country'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.country}
+                            value={userdetail.country != null ? userdetail.country : ''}
                             onChangeText={text => setCountry(text)}
                         />
                         {errors.country && <Text style={{ color: 'red' }}>{errors.country[0]}</Text>}
@@ -110,7 +110,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='Email'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.email}
+                            value={userdetail.email != null ? userdetail.email : ''}
                             onChangeText={text => setEmail(text)}
                             keyboardType="email-address"
                         />
@@ -120,7 +120,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='PhoneNumber'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.phone}
+                            value={userdetail.phone != null ? userdetail.phone : ''}
                             onChangeText={text => setPhone(text)}
                             keyboardType="numeric"
                         />
@@ -131,7 +131,7 @@ const EditProfileScreen = ({ navigation }) => {
                             label='Bio Data'
                             labelTextStyle={{ ...Fonts.black15Medium }}
                             style={{ ...Fonts.black15SemiBold, }}
-                            value={userdetail.profile.bio}
+                            value={userdetail.profile.bio != null ? userdetail.profile.bio : ''}
                             onChangeText={text => setBioData(text)}
                         />
                         {errors.bio && <Text style={{ color: 'red' }}>{errors.bio[0]}</Text>}
