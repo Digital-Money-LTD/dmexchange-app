@@ -279,7 +279,7 @@ const SignInScreen = ({ navigation }) => {
             return (
                 <View>
                     {/* Other form fields */}
-                    <TouchableOpacity onPress={() => navigate('ResetPassword')}>
+                    <TouchableOpacity onPress={() => navigation.push('forgotPassword')}>
                         <Text style={{ ...Fonts.blackRegular,position: 'absolute', right: 10, padding: 10, color: Colors.orangeColor}}>Forgot Password?</Text>
                     </TouchableOpacity>
                 </View>

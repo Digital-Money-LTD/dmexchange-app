@@ -55,6 +55,7 @@ export default TabBarScreen = ({ navigation }) => {
                     tabStyle={{
                         width: layout.width / 4.3,
                     }}
+                    
                     scrollEnabled={true}
                     style={{ backgroundColor: 'white', }}
                     renderLabel={({ route, focused, color }) => (
