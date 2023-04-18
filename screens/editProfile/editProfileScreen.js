@@ -1,29 +1,62 @@
-import React, { useState } from "react";
-import { Text, View, SafeAreaView, StatusBar, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+import { Text, View, SafeAreaView, StatusBar, Image, StyleSheet, ScrollView, Alert, TouchableOpacity } from "react-native";
 import { Colors, Fonts, Sizes } from "../../constants/styles";
 import { Ionicons, Feather, MaterialIcons } from '@expo/vector-icons';
 import { OutlinedTextField } from 'rn-material-ui-textfield';
 import { BottomSheet } from "@rneui/themed";
+import  AuthUser from "../../Api/AuthUser";
 
 const EditProfileScreen = ({ navigation }) => {
+    const navigater = useNavigation();
+    const { postRequest } = AuthUser();
+    const [first_name, setFirstName] = useState('');
+    const [last_name, setLastName] = useState('');
+    const [dob, setDob] = useState('');
+    const [country, setCountry] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [bio, setBioData] = useState('');
+    const [userdetail, setUserdetails] = useState('');
+    const [errors, setErrors] = useState({});
+    
 
-    const [state, setState] = useState({
-        name: 'Peter Jones',
-        email: 'peter@test.com',
-        phoneNumber: '123456789',
-        password: '1234567',
-        showBottomSheet: false,
-    })
+    useEffect(()=>{
+        fetchUserDetail();
+    }, []);
 
-    const updateState = (data) => setState((state) => ({ ...state, ...data }))
+    const fetchUserDetail = () =>{
+         getRequest('user-profile')
+         .then((response)=>{
+            setUserdetails(response.data);
+         });
+    }
 
-    const {
-        name,
-        email,
-        phoneNumber,
-        password,
-        showBottomSheet,
-    } = state;
+    const profile_data = {
+        first_name: first_name,
+        last_name: last_name,
+        dob: dob,
+        country: country,
+        email: email,
+        phone: phone,
+        bio: bio
+    };
+
+    const handleUpadateProfile = (e) => {
+        e.preventDefault();
+
+        postRequest('update-profile', profile_data)
+          .then(response => {
+            if (response.data.status === 400){
+              setErrors(response.data.message);
+            } else if (response.data.status === 200) {
+              Alert.alert(response.data.message);
+              setErrors('');
+              //navigater.navigate('SignIn');
+            }
+          })
+        .catch(error => console.log(error));
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
@@ -32,11 +65,83 @@ const EditProfileScreen = ({ navigation }) => {
                 {header()}
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {profileImageChangeInfo()}
-                    {nameTextField()}
-                    {emailTextField()}
-                    {phoneNumberTextField()}
-                    {passwordTextField()}
-                    {saveButton()}
+                    <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, marginTop: Sizes.fixPadding * 3.0 }}>
+                        <OutlinedTextField
+                            label='First Name'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.profile.first_name != null ? userdetail.profile.first_name : ''}
+                            onChangeText={text => setFirstName(text)}
+                        />
+                        {errors.first_name && <Text style={{ color: 'red' }}>{errors.first_name[0]}</Text>}
+                    </View>
+                    <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, marginTop: Sizes.fixPadding * 3.0 }}>
+                        <OutlinedTextField
+                            label='Last Name'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.profile.last_name != null ? userdetail.profile.last_name : ''}
+                            onChangeText={text => setLastName(text)}
+                        />
+                        {errors.last_name && <Text style={{ color: 'red' }}>{errors.last_name[0]}</Text>}
+                    </View>
+                    <View style={styles.textFieldsCommonStyle}>
+                        <OutlinedTextField
+                            label='Date of Birth'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.profile.dob != null ? userdetail.profile.dob : ''}
+                            onChangeText={text => setDob(text)}
+                        />
+                         {errors.dob && <Text style={{ color: 'red' }}>{errors.dob[0]}</Text>}
+                    </View>
+                    <View style={styles.textFieldsCommonStyle}>
+                        <OutlinedTextField
+                            label='Country'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.country != null ? userdetail.country : ''}
+                            onChangeText={text => setCountry(text)}
+                        />
+                        {errors.country && <Text style={{ color: 'red' }}>{errors.country[0]}</Text>}
+                    </View>
+                    <View style={styles.textFieldsCommonStyle}>
+                        <OutlinedTextField
+                            label='Email'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.email != null ? userdetail.email : ''}
+                            onChangeText={text => setEmail(text)}
+                            keyboardType="email-address"
+                        />
+                    </View>
+                    <View style={styles.textFieldsCommonStyle}>
+                        <OutlinedTextField
+                            label='PhoneNumber'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.phone != null ? userdetail.phone : ''}
+                            onChangeText={text => setPhone(text)}
+                            keyboardType="numeric"
+                        />
+                        {errors.phone && <Text style={{ color: 'red' }}>{errors.phone[0]}</Text>}
+                    </View>
+                    <View style={styles.textFieldsCommonStyle}>
+                        <OutlinedTextField
+                            label='Bio Data'
+                            labelTextStyle={{ ...Fonts.black15Medium }}
+                            style={{ ...Fonts.black15SemiBold, }}
+                            value={userdetail.profile.bio != null ? userdetail.profile.bio : ''}
+                            onChangeText={text => setBioData(text)}
+                        />
+                        {errors.bio && <Text style={{ color: 'red' }}>{errors.bio[0]}</Text>}
+                    </View>
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={handleUpadateProfile}
+                        style={styles.saveButtonContainerStyle}>
+                        <Text style={{ ...Fonts.white16SemiBold }}>Update Profile</Text>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
             {viewBottomSheet()}
@@ -94,81 +199,11 @@ const EditProfileScreen = ({ navigation }) => {
         )
     }
 
-    function saveButton() {
-        return (
-            <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.goBack()}
-                style={styles.saveButtonContainerStyle}>
-                <Text style={{ ...Fonts.white16SemiBold }}>Save</Text>
-            </TouchableOpacity>
-        )
-    }
-
-    function passwordTextField() {
-        return (
-            <View style={styles.textFieldsCommonStyle}>
-                <OutlinedTextField
-                    label='Password'
-                    labelTextStyle={{ ...Fonts.black15Medium }}
-                    style={{ ...Fonts.black15SemiBold, }}
-                    value={password}
-                    onChangeText={(value) => updateState({ password: value })}
-                    secureTextEntry={true}
-                />
-            </View>
-        )
-    }
-
-    function phoneNumberTextField() {
-        return (
-            <View style={styles.textFieldsCommonStyle}>
-                <OutlinedTextField
-                    label='PhoneNumber'
-                    labelTextStyle={{ ...Fonts.black15Medium }}
-                    style={{ ...Fonts.black15SemiBold, }}
-                    value={phoneNumber}
-                    onChangeText={(value) => updateState({ phoneNumber: value })}
-                    keyboardType="numeric"
-                />
-            </View>
-        )
-    }
-
-    function emailTextField() {
-        return (
-            <View style={styles.textFieldsCommonStyle}>
-                <OutlinedTextField
-                    label='Email'
-                    labelTextStyle={{ ...Fonts.black15Medium }}
-                    style={{ ...Fonts.black15SemiBold, }}
-                    value={email}
-                    onChangeText={(value) => updateState({ email: value })}
-                    keyboardType="email-address"
-                />
-            </View>
-        )
-    }
-
-    function nameTextField() {
-        return (
-            <View style={{ paddingHorizontal: Sizes.fixPadding * 2.0, marginTop: Sizes.fixPadding * 3.0 }}>
-                <OutlinedTextField
-                    label='Name'
-                    labelTextStyle={{ ...Fonts.black15Medium }}
-                    style={{ ...Fonts.black15SemiBold, }}
-                    value={name}
-                    onChangeText={(value) => updateState({ name: value })}
-                />
-            </View>
-        )
-    }
-
     function profileImageChangeInfo() {
         return (
             <View style={{ alignItems: 'center', marginTop: Sizes.fixPadding * 2.5 }}>
                 <Image
-                    source={require('../../assets/images/user/user_14.jpg')}
+                    source={userdetail.profile.picture}
                     style={{ height: 130.0, width: 130.0, borderRadius: 65.0, }}
                     resizeMode="contain"
                 />

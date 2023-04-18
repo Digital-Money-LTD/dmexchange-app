@@ -19,9 +19,8 @@ const UserScreen = ({ navigation }) => {
         fetchUserDetail();
     }, []);
 
-
     const fetchUserDetail = () =>{
-         getRequest('get-user')
+         getRequest('user-profile')
          .then((response)=>{
             setUserdetails(response.data);
          });
@@ -64,6 +63,18 @@ const UserScreen = ({ navigation }) => {
                                 icon: <Ionicons name="person-sharp" size={26} color="black" />,
                                 title: 'Edit Profile',
                                 description: 'Edit your profile'
+                            }
+                        )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={() => navigation.navigate('ChangePassword')}
+                    >
+                        {informations(
+                            {
+                                icon: <Ionicons name="person-sharp" size={26} color="black" />,
+                                title: 'Change Password',
+                                description: 'change your password to a new one'
                             }
                         )}
                     </TouchableOpacity>

@@ -10,6 +10,7 @@ import SuccessScreen from "./screens/success/successScreen";
 import WithdrawScreen from "./screens/withdraw/withdrawScreen";
 import WrongScreen from "./screens/wrong/wrongScreen";
 import EditProfileScreen from "./screens/editProfile/editProfileScreen";
+import ChangePasswordScreen from "./screens/ChangePassword/ChangePasswordScreen";
 import BankDetailScreen from "./screens/bankDetail/bankDetailScreen";
 import SupportScreen from "./screens/support/supportScreen";
 import PrivacyPolicyScreen from "./screens/privacyPolicy/privacyPolicyScreen";
@@ -48,6 +49,7 @@ const App = () => {
         <Stack.Screen name="Deposit" component={DepositScreen} />
         <Stack.Screen name="Withdraw" component={WithdrawScreen} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="BankDetail" component={BankDetailScreen} />
         <Stack.Screen name="Support" component={SupportScreen} />
         <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
