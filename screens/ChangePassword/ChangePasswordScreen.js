@@ -51,7 +51,6 @@ const ChangePasswordScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
                 {header()}
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    
                     <View style={styles.textFieldsCommonStyle}>
                         <OutlinedTextField
                             label='Old Password'
