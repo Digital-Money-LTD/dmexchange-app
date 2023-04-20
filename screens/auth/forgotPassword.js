@@ -52,7 +52,7 @@ const ForgotPasswordScreen = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      <View>
+      <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
         <TouchableOpacity onPress={() => navigation.push('SignIn')}>
           <Text style={{ alignSelf: 'center', marginTop: Sizes.fixPadding }}>
             Already have an account? <Text style={{ color: Colors.primaryColor }}>Login</Text>
