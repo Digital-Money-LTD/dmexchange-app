@@ -54,7 +54,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
       </View>
       <View style={{ alignSelf: 'center', marginBottom: Sizes.fixPadding * 2.0 }}>
         <Text style={{ alignSelf: 'center', marginTop: Sizes.fixPadding }}>
-          Already have an account? <Text style={{ color: Colors.primaryColor }} onPress={() => navigation.push('SignIn')}>Login</Text>
+          Already have an account? <Text style={{ color: Colors.primaryColor }} onPress={() => navigation.goBack()}>Login</Text>
         </Text>
       </View>
     </SafeAreaView>
