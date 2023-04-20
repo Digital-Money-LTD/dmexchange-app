@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, SafeAreaView, StatusBar, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(null);
   
@@ -52,12 +52,10 @@ const ForgotPasswordScreen = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-      <View style={{ position: 'absolute', bottom: 20, alignSelf: 'center' }}>
-        <TouchableOpacity onPress={() => navigation.push('SignIn')}>
-          <Text style={{ alignSelf: 'center', marginTop: Sizes.fixPadding }}>
-            Already have an account? <Text style={{ color: Colors.primaryColor }}>Login</Text>
-          </Text>
-        </TouchableOpacity>
+      <View style={{ alignSelf: 'center', marginBottom: Sizes.fixPadding * 2.0 }}>
+        <Text style={{ alignSelf: 'center', marginTop: Sizes.fixPadding }}>
+          Already have an account? <Text style={{ color: Colors.primaryColor }} onPress={() => navigation.push('SignIn')}>Login</Text>
+        </Text>
       </View>
     </SafeAreaView>
   );
