@@ -16,6 +16,7 @@ import SupportScreen from "./screens/support/supportScreen";
 import PrivacyPolicyScreen from "./screens/privacyPolicy/privacyPolicyScreen";
 import SigninScreen from "./screens/auth/signinScreen";
 import RegisterScreen from "./screens/auth/registerScreen";
+import ForgotPasswordScreen from "./screens/auth/forgotPassword";
 import OTPScreen from "./screens/auth/otpScreen";
 import SecurePinScreen from "./screens/auth/securePinScreen";
 import SplashScreen from "./screens/splashScreen";
@@ -32,11 +33,14 @@ const App = () => {
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
         }}
+
+        // initialRouteName="ForgotPassword"
       >
        
         <Stack.Screen name="Splash" component={SplashScreen} options={{ ...TransitionPresets.DefaultTransition }} />
         <Stack.Screen name="SignIn" component={SigninScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
         <Stack.Screen name="OTP" component={OTPScreen} />
         <Stack.Screen name="SecurePin" component={SecurePinScreen} />
         <Stack.Screen name="BottomTabScreen" component={BottomTabBarScreen} options={{ ...TransitionPresets.DefaultTransition }} />
