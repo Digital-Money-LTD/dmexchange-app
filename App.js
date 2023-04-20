@@ -33,6 +33,8 @@ const App = () => {
           headerShown: false,
           ...TransitionPresets.SlideFromRightIOS,
         }}
+
+        initialRouteName="ForgotPassword"
       >
        
         <Stack.Screen name="Splash" component={SplashScreen} options={{ ...TransitionPresets.DefaultTransition }} />
