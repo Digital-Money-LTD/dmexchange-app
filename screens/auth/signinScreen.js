@@ -165,7 +165,14 @@ const SignInScreen = ({ navigation }) => {
                     </View>
                     <Text style={errorstyles.error}>{passwordError}</Text>
                     
-                    {forGotPassword()}
+                    {/* {forGotPassword()} */}
+                    <View>
+                    {/* Other form fields */}
+                    <TouchableOpacity onPress={() => navigation.push('ForgotPassword')}>
+                        <Text style={{ ...Fonts.blackRegular,position: 'absolute', right: 10, padding: 10, color: Colors.orangeColor}}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                </View>
+                    
 
                     <TouchableOpacity
                         activeOpacity={0.9}
@@ -272,7 +279,7 @@ const SignInScreen = ({ navigation }) => {
             return (
                 <View>
                     {/* Other form fields */}
-                    <TouchableOpacity onPress={() => navigation.push('forgotPassword')}>
+                    <TouchableOpacity onPress={() => navigation.push('ForgotPassword')}>
                         <Text style={{ ...Fonts.blackRegular,position: 'absolute', right: 10, padding: 10, color: Colors.orangeColor}}>Forgot Password?</Text>
                     </TouchableOpacity>
                 </View>
