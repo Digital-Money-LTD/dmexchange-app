@@ -15,6 +15,7 @@ import BankDetailScreen from "./screens/bankDetail/bankDetailScreen";
 import SupportScreen from "./screens/support/supportScreen";
 import PrivacyPolicyScreen from "./screens/privacyPolicy/privacyPolicyScreen";
 import SigninScreen from "./screens/auth/signinScreen";
+import ReceiveScreen from "./screens/receive/receiveScreen";
 import RegisterScreen from "./screens/auth/registerScreen";
 import ForgotPasswordScreen from "./screens/auth/forgotPassword";
 import OTPScreen from "./screens/auth/otpScreen";
@@ -39,6 +40,7 @@ const App = () => {
        
         <Stack.Screen name="Splash" component={SplashScreen} options={{ ...TransitionPresets.DefaultTransition }} />
         <Stack.Screen name="SignIn" component={SigninScreen} />
+        <Stack.Screen name="Receive" component={ReceiveScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
         <Stack.Screen name="OTP" component={OTPScreen} />
