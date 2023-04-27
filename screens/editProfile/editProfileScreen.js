@@ -76,6 +76,20 @@ const EditProfileScreen = ({ navigation }) => {
         .catch(error => console.log(error));
     };
 
+    function userphoto() {
+        if (!userdetail || !userdetail.profile || !userdetail.profile.picture) {
+        return <View style={{ height: 110, width: 110, borderRadius: 55, backgroundColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 50, color: 'white' }}>{userdetail && userdetail.name ? userdetail.name.charAt(0).toUpperCase() : ''}</Text>
+                </View>;
+        } else {
+        return <Image
+            source={{ uri: userdetail.profile.picture }}
+            style={{ height: 110.0, width: 110.0, borderRadius: 55.0 }}
+            resizeMode="contain"
+        />;
+        }
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
             <StatusBar translucent={false} backgroundColor={Colors.primaryColor} />
@@ -238,11 +252,7 @@ const EditProfileScreen = ({ navigation }) => {
     function profileImageChangeInfo() {
         return (
             <View style={{ alignItems: 'center', marginTop: Sizes.fixPadding * 2.5 }}>
-                <Image
-                    source={{ uri: "https://staging.dmexchange.com/storage/profile/4229/avatar.jpg?id=ZJuz6" }}
-                    style={{ height: 130.0, width: 130.0, borderRadius: 65.0, }}
-                    resizeMode="contain"
-                />
+                {userphoto()}
                 <View style={{ position: 'absolute', bottom: -9.0, }}>
                     <TouchableOpacity
                         activeOpacity={0.9}

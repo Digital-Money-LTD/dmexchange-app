@@ -68,7 +68,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
 
 
     const fetchUserDetail = () =>{
-         getRequest('get-user')
+         getRequest('user-profile')
          .then((response)=>{
             setUserdetails(response.data);
          });
@@ -178,6 +178,19 @@ const HomeScreen = ({ navigation, changeIndex }) => {
         )
     }
 
+    function userphoto() {
+        if (!userdetail || !userdetail.profile || !userdetail.profile.picture) {
+        return <View style={{ height: 40.0, width: 40.0, borderRadius: 15.0, backgroundColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 20, color: 'white' }}>{userdetail && userdetail.name ? userdetail.name.charAt(0).toUpperCase() : ''}</Text>
+                </View>;
+        } else {
+        return <Image
+            source={{ uri: userdetail.profile.picture }}
+            style={{ height: 40.0, width: 40.0, borderRadius: 15.0  }}
+        />;
+        }
+    }
+
     //popular currencies title 
     function popularCurrenciesTitle() {
         return (
@@ -245,10 +258,8 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                         activeOpacity={0.9}
                         onPress={() => changeIndex({ index: 4 })}
                     >
-                        <Image
-                        source={require('../../assets/images/user/user_14.jpg')}
-                        style={{ height: 40.0, width: 40.0, borderRadius: 15.0 }}
-                        />
+                     {userphoto()}
+                        
                     </TouchableOpacity>
                 </View>
 
