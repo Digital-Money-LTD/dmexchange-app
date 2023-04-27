@@ -3,10 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, TouchableOpacity, View, SafeAreaView, StatusBar, Image, StyleSheet, FlatList, Table, Row, Rows  } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
 import SvgUri from 'react-native-svg';
-//import SvgUri from 'react-native-svg-uri';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import  AuthUser from "../../Api/AuthUser";
-
 const logo = 'https://staging.dmexchange.com/coin/dm.svg';
 
 const portfolioList = [
