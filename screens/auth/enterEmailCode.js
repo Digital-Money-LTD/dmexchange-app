@@ -22,16 +22,65 @@ const EnterEmailCodeScreen = ({ navigation }) => {
     const [state, setState] = useState({
         isLoading: false
     });
+    const [otpText, setotpText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  const updateState = (data) => setState((state) => ({ ...state, ...data }))
 
-  const handleResetPassword = (e) => {
+  const { email } = route.params;
+  let _data = {
+    email: email,
+    code: otpText
+  };
+
+  const handleVerification = (e) => {
     e.preventDefault();
+    if(!validateOtp(otpText)) {
+        setIsLoading(false);
+        Alert.alert("Invalid email code");
+        return;
+    }
+     
     setIsLoading(true);
     // simulate request
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate("ResetPassword");
-    }, 2000);
+    postRequest('request-token', _data)
+    .then(response => {
+      setIsLoading(false); // Set isLoading back to false
+      if (response.data.status === 401 ){
+        console.log(response.data);
+        Alert.alert(response.data.message);
+      } else if (response.data.status === 400) {
+          Alert.alert("Input Errors" + response.data.message);
+      } else if (response.data.status === 200) {
+        console.log(response.data);
+        navigation.navigate('ResetPassword', {
+            'token': response.data.body['token']
+        });
+      }
+    })
+    
+    //.
+    .catch(error => {
+      // Handle network error
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   navigation.navigate("ResetPassword");
+    // }, 2000);
+  };
+
+  const validateOtp = (otpText) => {
+    return otpText.length == 6;
   };
 
   return (
@@ -118,14 +167,26 @@ function otpFields() {
   const fifthTextInput = createRef();
   const sixthTextInput = createRef();
 
+  function updateOtp(str, inputRef) {
+    if(str.length == 1) {
+        setotpText(otpText+ str);
+        inputRef.current.focus();
+    }
+  }
+
+  function updateLastOtp(str) {
+    if(str.length == 1) {
+        setotpText(otpText+ str);
+        handleVerification();
+    }
+  }
+
   return (
     <View style={styles.otpFieldsContainerStyle}>
       <View style={styles.textFieldContainerStyle}>
         <TextInput
           style={Fonts.black17SemiBold}
-          onChangeText={() => {
-            secondTextInput.current.focus();
-          }}
+          onChangeText={(str) => updateOtp(str, secondTextInput)}
           keyboardType="numeric"
         />
       </View>
@@ -135,9 +196,7 @@ function otpFields() {
           style={Fonts.black17SemiBold}
           ref={secondTextInput}
           keyboardType="numeric"
-          onChangeText={() => {
-            thirdTextInput.current.focus();
-          }}
+          onChangeText={(str) => updateOtp(str, thirdTextInput)}
         />
       </View>
 
@@ -146,9 +205,7 @@ function otpFields() {
           style={Fonts.black17SemiBold}
           keyboardType="numeric"
           ref={thirdTextInput}
-          onChangeText={() => {
-            forthTextInput.current.focus();
-          }}
+          onChangeText={(str) => updateOtp(str, forthTextInput)}
         />
       </View>
 
@@ -157,9 +214,7 @@ function otpFields() {
           style={Fonts.black17SemiBold}
           keyboardType="numeric"
           ref={forthTextInput}
-          onChangeText={() => {
-            fifthTextInput.current.focus();
-          }}
+          onChangeText={(str) => updateOtp(str, fifthTextInput)}
         />
       </View>
 
@@ -168,9 +223,7 @@ function otpFields() {
           style={Fonts.black17SemiBold}
           keyboardType="numeric"
           ref={fifthTextInput}
-          onChangeText={() => {
-            sixthTextInput.current.focus();
-          }}
+          onChangeText={(str) => updateOtp(str, sixthTextInput)}
         />
       </View>
 
@@ -179,13 +232,7 @@ function otpFields() {
           style={Fonts.black17SemiBold}
           keyboardType="numeric"
           ref={sixthTextInput}
-          onChangeText={() => {
-            updateState({ isLoading: true });
-            setTimeout(() => {
-              updateState({ isLoading: false });
-              navigation.navigate('SecurePin');
-            }, 2000);
-          }}
+          onChangeText={(str) =>updateLastOtp}
         />
       </View>
     </View>

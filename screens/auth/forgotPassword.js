@@ -20,7 +20,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   let _data = {
     email: email,
-};
+  };
 
   const handleResetPassword = (e) => {
     e.preventDefault();
@@ -40,7 +40,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
           Alert.alert("Input Errors" + response.data.message);
       } else if (response.data.status === 200) {
         console.log(response.data);
-        navigation.navigate('EnterEmailCode');
+        navigation.navigate('EnterEmailCode', {
+          email: email
+        });
       }
     })
     
