@@ -54,7 +54,7 @@ const EnterEmailCodeScreen = ({ navigation }) => {
       } else if (response.data.status === 200) {
         console.log(response.data);
         navigation.navigate('ResetPassword', {
-            'token': response.data.token
+            'email': email
         });
       }
     })

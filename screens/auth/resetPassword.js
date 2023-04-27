@@ -28,15 +28,77 @@ const ResetPasswordScreen = ({ navigation }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  
+  const { email } = route.params;  
+  let _data = {
+    password: password,
+    email: email
+  };
+
   const handleResetPassword = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // simulate request
-    setTimeout(() => {
+    if(!validatePassword) {
       setIsLoading(false);
-      navigation.navigate("ResetPassword");
-    }, 2000);
+      return; 
+    }
+    
+    // simulate request
+    postRequest('reset', _data)
+    .then(response => {
+      setIsLoading(false); // Set isLoading back to false
+      if (response.data.status === 401 ){
+        console.log(response.data);
+        Alert.alert(response.data.message);
+      } else if (response.data.status === 400) {
+          Alert.alert("Input Errors" + response.data.message);
+      } else if (response.data.status === 200) {
+        console.log(response.data);
+        navigation.navigate('SignIn');
+      }
+    })
+    
+    //.
+    .catch(error => {
+      // Handle network error
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
   };
+
+  const validatePassword = () => {
+    
+    let errors = {};
+      
+    if (!password) {
+      errors.password = "Please enter a password";
+    } else if (password.length < 8) {
+      errors.password = "Password must be at least 8 characters";
+    }
+
+    if (!password_confirmation) {
+      errors.confirmPassword = "Please confirm your password";
+    } else if (password_confirmation !== password) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+    setPasswordError(errors.password || null);
+    setConfirmPasswordError(errors.confirmPassword || null);
+
+    if(Object.keys(errors).length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backColor }}>
