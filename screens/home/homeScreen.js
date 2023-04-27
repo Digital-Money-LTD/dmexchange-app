@@ -234,7 +234,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                         </View>
                     )}
                 </View>
-            
+                
                     <Text style={{ ...Fonts.white16Medium }}>Your Balance</Text>
                     <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}> { balance.formattedPrice }</Text>
                 </View>
@@ -265,7 +265,10 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                         <Ionicons name="arrow-up-circle" size={30} color="black" />
                         <Text style={styles.buttonText}>Send</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity 
+                    style={styles.button}
+                    onPress={() => navigation.push('Receive')}
+                   > 
                         <Ionicons name="arrow-down-circle" size={30} color="black" />
                         <Text style={styles.buttonText}>Receive</Text>
                     </TouchableOpacity>

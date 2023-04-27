@@ -16,6 +16,7 @@ const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
+    
     const [nameError, setNameError] = useState(null);
     const [emailError, setEmailError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
