@@ -18,6 +18,10 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const [emailError, setEmailError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  let _data = {
+    email: email,
+  };
+
   const handleResetPassword = (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
@@ -26,15 +30,54 @@ const ForgotPasswordScreen = ({ navigation }) => {
     }
     setIsLoading(true);
     // simulate request
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate("ResetPassword");
-    }, 2000);
+    postRequest('send-email-code', _data)
+    .then(response => {
+      setIsLoading(false); // Set isLoading back to false
+      if (response.data.status === 401 ){
+        console.log(response.data);
+        Alert.alert(response.data.message);
+      } else if (response.data.status === 400) {
+          Alert.alert("Input Errors" + response.data.message);
+      } else if (response.data.status === 200) {
+        console.log(response.data);
+        navigation.navigate('EnterEmailCode', {
+          email: email
+        });
+      }
+    })
+    
+    //.
+    .catch(error => {
+      // Handle network error
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   navigation.navigate("ResetPassword");
+    // }, 2000);
   };
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+
+  const handleEmailChange = text => {
+    setEmail(text);
+    if (validateEmail(text)) {
+        setEmailError('');
+    } else {
+        setEmailError('Invalid email');
+    }
   };
 
   return (
@@ -79,7 +122,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
               placeholderTextColor={Colors.blackColor}
               style={{ ...Fonts.black16Medium }}
               keyboardType="email-address"
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={handleEmailChange}
+              // onChangeText={(text) => setEmail(text)}
             />
             {emailError && (
               <Text style={{ color: "red" }}>{emailError}</Text>

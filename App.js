@@ -19,6 +19,8 @@ import ReceiveScreen from "./screens/receive/receiveScreen";
 import RegisterScreen from "./screens/auth/registerScreen";
 import ExchangeScreen from "./screens/exchange/exchangeScreen";
 import ForgotPasswordScreen from "./screens/auth/forgotPassword";
+import ResetPasswordScreen from './screens/auth/resetPassword';
+import EnterEmailCodeScreen from "./screens/auth/enterEmailCode";
 import OTPScreen from "./screens/auth/otpScreen";
 import SecurePinScreen from "./screens/auth/securePinScreen";
 import SplashScreen from "./screens/splashScreen";
@@ -36,7 +38,7 @@ const App = () => {
           ...TransitionPresets.SlideFromRightIOS,
         }}
 
-        // initialRouteName="ForgotPassword"
+        // initialRouteName="ResetPassword"
       >
        
         <Stack.Screen name="Splash" component={SplashScreen} options={{ ...TransitionPresets.DefaultTransition }} />
@@ -45,6 +47,8 @@ const App = () => {
         <Stack.Screen name="ExchangeScreen" component={ExchangeScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
+        <Stack.Screen name='EnterEmailCode' component={EnterEmailCodeScreen} />
+        <Stack.Screen name='ResetPassword' component={ResetPasswordScreen} />
         <Stack.Screen name="OTP" component={OTPScreen} />
         <Stack.Screen name="SecurePin" component={SecurePinScreen} />
         <Stack.Screen name="BottomTabScreen" component={BottomTabBarScreen} options={{ ...TransitionPresets.DefaultTransition }} />
