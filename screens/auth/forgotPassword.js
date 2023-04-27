@@ -12,11 +12,15 @@ import {
   ActivityIndicator
 } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
+import  AuthUser from "../../Api/AuthUser";
+import { useRoute } from '@react-navigation/native';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { postRequest} = AuthUser();
+  const route = useRoute();
 
   let _data = {
     email: email,

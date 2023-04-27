@@ -14,6 +14,8 @@ import {
   ActivityIndicator
 } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
+import  AuthUser from "../../Api/AuthUser";
+import { useRoute } from '@react-navigation/native';
 
 
 const { width } = Dimensions.get('screen');
@@ -22,10 +24,12 @@ const EnterEmailCodeScreen = ({ navigation }) => {
     const [state, setState] = useState({
         isLoading: false
     });
+    const {postRequest} = AuthUser();
     const [otpText, setotpText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const route = useRoute();
   
-  const updateState = (data) => setState((state) => ({ ...state, ...data }))
+  const updateState = (data) => setState((state) => ({ ...state, ...data }));
 
   const { email } = route.params;
   let _data = {

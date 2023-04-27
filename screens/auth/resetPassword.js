@@ -14,6 +14,8 @@ import {
   ActivityIndicator
 } from "react-native";
 import { Fonts, Colors, Sizes } from "../../constants/styles";
+import  AuthUser from "../../Api/AuthUser";
+import { useRoute } from '@react-navigation/native';
 
 
 const { width } = Dimensions.get('screen');
@@ -22,13 +24,14 @@ const ResetPasswordScreen = ({ navigation }) => {
   const [state, setState] = useState({
         isLoading: false
     });
+  const {http, postRequest} = AuthUser();
   const [password, setPassword] = useState('');
   const [password_confirmation, setConfirmPassword] = useState('');  
   const [passwordError, setPasswordError] = useState(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  
+  const route = useRoute();
   const { email } = route.params;  
   let _data = {
     password: password,
