@@ -234,7 +234,7 @@ const HomeScreen = ({ navigation, changeIndex }) => {
                         </View>
                     )}
                 </View>
-            
+                
                     <Text style={{ ...Fonts.white16Medium }}>Your Balance</Text>
                     <Text style={{ ...Fonts.white30Bold, marginVertical: Sizes.fixPadding }}> { balance.formattedPrice }</Text>
                 </View>

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Text, View, Image, TouchableOpacity, StyleSheet, BackHandler } from "react-native";
 import HomeScreen from "../screens/home/homeScreen";
-import StatisticScreen from "../screens/statistic/statisticScreen";
+import ExchangeScreen from "../screens/exchange/exchangeScreen";
 import PortfolioScreen from "../screens/portfolio/portfolioScreen";
 import UserScreen from "../screens/user/userScreen";
 import { Sizes, Colors, Fonts } from "../constants/styles";
@@ -47,7 +47,7 @@ const BottomTabBarScreen = ({ navigation }) => {
             {currentIndex == 1 ?
                 <HomeScreen navigation={navigation} changeIndex={changeIndex} /> :
                 currentIndex == 2 ?
-                    <StatisticScreen navigation={navigation} /> :
+                    <ExchangeScreen navigation={navigation} /> :
                     currentIndex == 3 ?
                         <PortfolioScreen navigation={navigation} /> :
                         <UserScreen navigation={navigation} />
@@ -61,14 +61,14 @@ const BottomTabBarScreen = ({ navigation }) => {
                 })}
                 {bottomTabBarItem({
                     index: 2,
-                    icon: require('../assets/images/icon/grey/statistic.png'),
-                    title: 'Assets',
+                    icon: require('../assets/images/icon/bottom-bar/exchange.png'),
+                    title: 'Trade',
                 })}
                 
                 {bottomTabBarItem({
                     index: 3,
                     icon: require('../assets/images/icon/grey/portfolio.png'),
-                    title: 'Trade',
+                    title: 'Stake',
                 })}
                 {bottomTabBarItem({
                     index: 4,
