@@ -23,7 +23,22 @@ const UserScreen = ({ navigation }) => {
          getRequest('user-profile')
          .then((response)=>{
             setUserdetails(response.data);
+            
          });
+    }
+
+    function userphoto() {
+        if (!userdetail || !userdetail.profile || !userdetail.profile.picture) {
+        return <View style={{ height: 110, width: 110, borderRadius: 55, backgroundColor: '#d3d3d3', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 50, color: 'white' }}>{userdetail && userdetail.name ? userdetail.name.charAt(0).toUpperCase() : ''}</Text>
+                </View>;
+        } else {
+        return <Image
+            source={{ uri: userdetail.profile.picture }}
+            style={{ height: 110.0, width: 110.0, borderRadius: 55.0 }}
+            resizeMode="contain"
+        />;
+        }
     }
 
    const handleLogout = async () => {
@@ -35,9 +50,7 @@ const UserScreen = ({ navigation }) => {
             } catch (error) {
                 console.log('Error while logging out:', error);
             }
-};
-
-
+   };
 
 
     const [state, setState] = useState({
@@ -195,15 +208,12 @@ const UserScreen = ({ navigation }) => {
         )
     }
 
-    function userInfo() {
+    function userInfo() { 
         return (
             <View style={{ alignItems: 'center', marginVertical: Sizes.fixPadding * 2.0 }}>
                 <View>
-                    <Image
-                        source={require('../../assets/images/user/user_14.jpg')}
-                        style={{ height: 110.0, width: 110.0, borderRadius: 55.0 }}
-                        resizeMode="contain"
-                    />
+                
+                    {userphoto()}
                     <View style={styles.imageVerifySignContainerStyle}>
                         {<MaterialCommunityIcons name="check" size={24} color={Colors.whiteColor} />}
                     </View>
