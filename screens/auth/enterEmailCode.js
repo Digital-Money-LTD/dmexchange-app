@@ -54,7 +54,7 @@ const EnterEmailCodeScreen = ({ navigation }) => {
       } else if (response.data.status === 200) {
         console.log(response.data);
         navigation.navigate('ResetPassword', {
-            'token': response.data.body['token']
+            'token': response.data.token
         });
       }
     })
@@ -159,86 +159,88 @@ const EnterEmailCodeScreen = ({ navigation }) => {
       </View>
     </SafeAreaView>
   );
-};
+
+  
 function otpFields() {
-  const secondTextInput = createRef();
-  const thirdTextInput = createRef();
-  const forthTextInput = createRef();
-  const fifthTextInput = createRef();
-  const sixthTextInput = createRef();
-
-  function updateOtp(str, inputRef) {
-    if(str.length == 1) {
-        setotpText(otpText+ str);
-        inputRef.current.focus();
+    const secondTextInput = createRef();
+    const thirdTextInput = createRef();
+    const forthTextInput = createRef();
+    const fifthTextInput = createRef();
+    const sixthTextInput = createRef();
+  
+    function updateOtp(str, inputRef) {
+      if(str.length == 1) {
+          setotpText(otpText+ str);
+          inputRef.current.focus();
+      }
     }
-  }
-
-  function updateLastOtp(str) {
-    if(str.length == 1) {
-        setotpText(otpText+ str);
-        handleVerification();
+  
+    function updateLastOtp(str) {
+      if(str.length == 1) {
+          setotpText(otpText+ str);
+          handleVerification();
+      }
     }
+  
+    return (
+      <View style={styles.otpFieldsContainerStyle}>
+        <View style={styles.textFieldContainerStyle}>
+          <TextInput
+            style={Fonts.black17SemiBold}
+            onChangeText={(str) => updateOtp(str, secondTextInput)}
+            keyboardType="numeric"
+          />
+        </View>
+  
+        <View style={styles.textFieldContainerStyle}>
+          <TextInput
+            style={Fonts.black17SemiBold}
+            ref={secondTextInput}
+            keyboardType="numeric"
+            onChangeText={(str) => updateOtp(str, thirdTextInput)}
+          />
+        </View>
+  
+        <View style={styles.textFieldContainerStyle}>
+          <TextInput
+            style={Fonts.black17SemiBold}
+            keyboardType="numeric"
+            ref={thirdTextInput}
+            onChangeText={(str) => updateOtp(str, forthTextInput)}
+          />
+        </View>
+  
+        <View style={styles.textFieldContainerStyle}>
+          <TextInput
+            style={Fonts.black17SemiBold}
+            keyboardType="numeric"
+            ref={forthTextInput}
+            onChangeText={(str) => updateOtp(str, fifthTextInput)}
+          />
+        </View>
+  
+        <View style={styles.textFieldContainerStyle}>
+          <TextInput
+            style={Fonts.black17SemiBold}
+            keyboardType="numeric"
+            ref={fifthTextInput}
+            onChangeText={(str) => updateOtp(str, sixthTextInput)}
+          />
+        </View>
+  
+        <View style={styles.textFieldContainerStyle}>
+          <TextInput
+            style={Fonts.black17SemiBold}
+            keyboardType="numeric"
+            ref={sixthTextInput}
+            onChangeText={(str) =>updateLastOtp}
+          />
+        </View>
+      </View>
+    );
   }
-
-  return (
-    <View style={styles.otpFieldsContainerStyle}>
-      <View style={styles.textFieldContainerStyle}>
-        <TextInput
-          style={Fonts.black17SemiBold}
-          onChangeText={(str) => updateOtp(str, secondTextInput)}
-          keyboardType="numeric"
-        />
-      </View>
-
-      <View style={styles.textFieldContainerStyle}>
-        <TextInput
-          style={Fonts.black17SemiBold}
-          ref={secondTextInput}
-          keyboardType="numeric"
-          onChangeText={(str) => updateOtp(str, thirdTextInput)}
-        />
-      </View>
-
-      <View style={styles.textFieldContainerStyle}>
-        <TextInput
-          style={Fonts.black17SemiBold}
-          keyboardType="numeric"
-          ref={thirdTextInput}
-          onChangeText={(str) => updateOtp(str, forthTextInput)}
-        />
-      </View>
-
-      <View style={styles.textFieldContainerStyle}>
-        <TextInput
-          style={Fonts.black17SemiBold}
-          keyboardType="numeric"
-          ref={forthTextInput}
-          onChangeText={(str) => updateOtp(str, fifthTextInput)}
-        />
-      </View>
-
-      <View style={styles.textFieldContainerStyle}>
-        <TextInput
-          style={Fonts.black17SemiBold}
-          keyboardType="numeric"
-          ref={fifthTextInput}
-          onChangeText={(str) => updateOtp(str, sixthTextInput)}
-        />
-      </View>
-
-      <View style={styles.textFieldContainerStyle}>
-        <TextInput
-          style={Fonts.black17SemiBold}
-          keyboardType="numeric"
-          ref={sixthTextInput}
-          onChangeText={(str) =>updateLastOtp}
-        />
-      </View>
-    </View>
-  );
-}
-
+  
+};
 
 
 const styles = StyleSheet.create({
