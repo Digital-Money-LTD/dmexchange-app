@@ -86,7 +86,7 @@ const EnterEmailCodeScreen = ({ navigation }) => {
           >
             {!isLoading ? (
               <Text style={{ ...Fonts.white16SemiBold }}>
-                Reset Password
+                Verify
               </Text>
             ) : (
               <ActivityIndicator size="small" color="#fff" />

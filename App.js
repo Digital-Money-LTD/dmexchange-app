@@ -37,7 +37,7 @@ const App = () => {
           ...TransitionPresets.SlideFromRightIOS,
         }}
 
-        // initialRouteName="EnterEmailCode"
+        // initialRouteName="ResetPassword"
       >
        
         <Stack.Screen name="Splash" component={SplashScreen} options={{ ...TransitionPresets.DefaultTransition }} />
@@ -46,6 +46,7 @@ const App = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name='ForgotPassword' component={ForgotPasswordScreen} />
         <Stack.Screen name='EnterEmailCode' component={EnterEmailCodeScreen} />
+        <Stack.Screen name='ResetPassword' component={ResetPasswordScreen} />
         <Stack.Screen name="OTP" component={OTPScreen} />
         <Stack.Screen name="SecurePin" component={SecurePinScreen} />
         <Stack.Screen name="BottomTabScreen" component={BottomTabBarScreen} options={{ ...TransitionPresets.DefaultTransition }} />
