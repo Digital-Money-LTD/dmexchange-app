@@ -95,9 +95,9 @@ const SignInScreen = ({ navigation }) => {
             setIsLoading(false); // Set isLoading back to false
             if (response.data.status === 401 ){
               console.log(response.data);
-              Alert.alert(response.data.message);
+              Alert.alert("Error", response.data.message);
             } else if (response.data.status === 400) {
-                Alert.alert("Input Errors" + response.data.message);
+                Alert.alert("Error", "Input Errors" + response.data.message);
             } else if (response.data.status === 200) {
               console.log(response.data);
               AsyncStorage.setItem('api_token', response.data.token);

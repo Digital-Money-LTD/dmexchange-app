@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Text,
   View,
+  Alert,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -28,6 +29,11 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   const handleResetPassword = (e) => {
     e.preventDefault();
+
+// Alert.alert('Title', 'This is a toast message!', [
+//   { text: 'OK', onPress: () => console.log('OK Pressed') }
+// ]);
+
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address");
       return;
